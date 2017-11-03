@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:elevation="5dp"
+                android:src="@drawable/hed"
+                app:civ_border_color="#FF0000"
+                app:civ_border_width="2dp" />
+
+            <ImageView
+                android:id="@+id/circle_image"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_recylerview_normal"
+                android:padding="1dp"
+                android:src="@drawable/hed" />
+            <LinearLayout
+                android:layout_gravity="end"
+                android:layout_width="96dp"
+                android:background="@drawable/bg_white_line"
+                android:layout_height="96dp">
+                <ImageView
+                    android:transitionName="head_image"
+                    android:id="@+id/image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:padding="1dp"
+                    android:src="@mipmap/gril" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/btn1"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:outlineProvider="background"
+            android:padding="2dp"
+            android:text="QQ" />
+
+        <Button
+            android:id="@+id/btn2"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="RecylerView" />
+
+        <Button
+            android:id="@+id/btn3"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="listviewd的下拉列表" />
+
+        <Button
+            android:id="@+id/btn4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="登录" />
+
+        <Button
+            android:id="@+id/btn5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="加载图片三级缓存" />
+
+        <Button
+            android:id="@+id/btn6"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="TextInputLayout" />
+
+        <Button
+            android:id="@+id/btn7"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="OKhttp" />
+
+        <Button
+            android:id="@+id/btn8"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="GreenDao" />
+
+        <Button
+            android:id="@+id/btn9"
+            style="@style/AlertDialog.AppCompat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="retrofit" />
+
+        <Button
+            android:id="@+id/btn10"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:padding="1dp"
+            android:text="工程设计模式" />
+
+        <Button
+            android:id="@+id/btn11"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_white_line"
+            android:elevation="5dp"
+            android:onClick="adapter"
+            android:padding="1dp"
+            android:text="适配器模式" />
+
+        <Button
+            android:id="@+id/btn12"
+            style="@style/ButtonStyle"
+            android:onClick="decotor"
+            android:text="装饰设计模式De" />
+        <Button
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:text="最简单的例子"
+            android:background="@drawable/bg_white_line"
+            android:id="@+id/button1"/>
+
+        <Button
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:text="通过代码实现动画和回调等"
+            android:background="@drawable/bg_white_line"
+            android:id="@+id/button2"
+            />
+
+        <Button
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:text="从网络上获取动画效果"
+            android:background="@drawable/bg_white_line"
+            android:id="@+id/button3"
+           />
+    </LinearLayout>
+</ScrollView>

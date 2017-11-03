@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:paddingTop="10dp"
+        android:scaleType="fitXY"
+        android:transitionName="head_image"
+        android:id="@+id/show_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/bg_white_line"
+        android:src="@mipmap/gril" />
+    <TextView
+        android:padding="20dp"
+        android:gravity="center"
+        android:text="夏有乔木，雅望天堂\n北斗兼春远，南陵寓使迟。\n天涯占梦数，疑误有新知。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

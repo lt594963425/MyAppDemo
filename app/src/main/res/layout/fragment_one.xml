@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:cardCornerRadius="10dp">
+
+            <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                app:indicator_drawable_selected="@drawable/point_focus"
+                app:indicator_drawable_unselected="@drawable/point_normal" />
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_white_line">
+
+            <EditText
+                android:id="@+id/url_et"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="信息输入框" />
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_delete" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/url_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:background="@drawable/ripple_bg"
+                android:clickable="true"
+                android:text="URl测试" />
+
+            <Button
+                android:id="@+id/md5_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:background="@drawable/bg_white_line"
+                android:text="MD5" />
+
+            <TextClock
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_white_line"
+                android:elevation="1dp"
+                android:format24Hour=" yyyy年MM月dd \n aa HH:mm:ss EE"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/log_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="显示结果!"
+                    android:textIsSelectable="true" />
+            </ScrollView>
+
+
+        </RelativeLayout>
+
+        <TextSwitcher
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:inAnimation="@anim/push_up_in"
+            android:outAnimation="@anim/push_up_out">
+
+        </TextSwitcher>
+
+        <Button
+            android:id="@+id/btn_rx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/sv"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:text="rx" />
+
+        <Button
+            android:layout_marginTop="5dp"
+            android:id="@+id/cacheTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:onClick="cacheTest"
+            android:text="缓存"
+            android:textAlignment="center" />
+       <TextView
+           android:id="@+id/text_layout"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"/>
+    </LinearLayout>
+</ScrollView>

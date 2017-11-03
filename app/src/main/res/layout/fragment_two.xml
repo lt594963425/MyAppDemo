@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/azimuth_angle_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="Hello RxJava!"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/btn_baidumap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/bg_white_line"
+            android:clickable="true"
+            android:padding="2dp"
+            android:text="百度地图" />
+
+
+        <Button
+            android:layout_marginTop="2dp"
+            android:id="@+id/btn_retrofit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:text="去哪儿" />
+
+        <Button
+            android:layout_marginTop="2dp"
+            android:id="@+id/btn_rxandroid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:textAllCaps="false"
+            android:text="打开摄像头TextureView" />
+
+        <Button
+            android:layout_marginTop="2dp"
+            android:id="@+id/btn_OpenGLES"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:textAllCaps="false"
+            android:text="Opengles" />
+        <Button
+            android:layout_marginTop="2dp"
+            android:id="@+id/btn_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:textAllCaps="false"
+            android:text="圆弧比例" />
+        <Button
+            android:layout_marginTop="2dp"
+            android:id="@+id/btn_xuanzh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:textAllCaps="false"
+            android:text="旋转翻转" />
+    </LinearLayout>
+
+</ScrollView>

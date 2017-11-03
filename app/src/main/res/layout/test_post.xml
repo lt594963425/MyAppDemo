@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/post_url1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@null"
+        android:text="http://192.168.6.52/index/index/index" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+
+
+
+    <Button
+        android:textAllCaps="false"
+        android:id="@+id/post_btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_white_line"
+        android:clickable="true"
+        android:onClick="Post"
+        android:text="请求-index" />
+
+    <EditText
+        android:id="@+id/post_url2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_white_line"
+        android:text="http://192.168.6.52/index/index/again" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+
+
+
+    <Button
+        android:id="@+id/post_btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_white_line"
+        android:clickable="true"
+        android:textAllCaps="false"
+        android:onClick="PostAgin"
+        android:text="请求-agin" />
+
+
+    <TextView
+        android:id="@+id/text_show1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp" />
+</LinearLayout>
