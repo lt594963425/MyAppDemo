@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import android.opengl.Matrix;
 
-import com.example.administrator.fragment.fragment2.activity.GLBitmap;
+import com.example.administrator.ui.fragment2.activity.GLBitmap;
 import com.example.administrator.mesh.Mesh;
 
 import javax.microedition.khronos.egl.EGLConfig;

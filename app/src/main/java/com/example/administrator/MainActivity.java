@@ -20,10 +20,10 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.example.administrator.base.BaseActivity;
-import com.example.administrator.fragment.Fragment1;
-import com.example.administrator.fragment.Fragment2;
-import com.example.administrator.fragment.Fragment3;
-import com.example.administrator.fragment.Fragment4;
+import com.example.administrator.ui.Fragment1;
+import com.example.administrator.ui.Fragment2;
+import com.example.administrator.ui.Fragment3;
+import com.example.administrator.ui.Fragment4;
 import com.example.administrator.fragmentHelp.MyFragmentAdapter;
 import com.example.administrator.utils.ToastUtils;
 import com.example.administrator.view.materialsearchview.MaterialSearchView;

@@ -22,7 +22,6 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
 /**
- * 单例设计模式
  * Created by Fox on 2016/3/4.
  */
 public class MyApplication extends Application {

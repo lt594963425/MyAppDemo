@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.administrator.fragment.fragment2.View.AreCicleView
+    <com.example.administrator.ui.fragment2.View.AreCicleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

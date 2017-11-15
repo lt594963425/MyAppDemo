@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.administrator">
+          package="com.example.administrator">
 
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 蓝牙分享所需的权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".MyApplication"
@@ -41,61 +41,55 @@
             android:windowSoftInputMode="adjustPan|stateHidden">
             <!--//解决tabHost被软键盘顶起的问题-->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".fragment.fragment4.activity.ActivityImageLoader" />
-        <activity android:name=".fragment.fragment4.activity.ActivityListViewRefresh" />
-        <activity android:name=".fragment.fragment4.activity.ActivityOne" />
-        <activity android:name=".fragment.fragment4.activity.ActivityTextInputLayout" />
-        <activity android:name=".fragment.fragment4.activity.ActivityTwo" />
-        <activity android:name=".fragment.fragment4.activity.ActivityListPup" />
-        <activity android:name=".greendao.ActivityGreenDao" />
-        <activity android:name=".fragment.fragment4.activity.OKHttpActivity" />
-        <activity android:name=".retrofit.ActivityRetrofit" />
-        <activity android:name=".fragment.fragment2.activity.ActivityBaiDuMap" />
-        <activity android:name=".fragment.fragment2.activity.ActivityGoTo" />
-        <activity android:name=".fragment.fragment2.activity.ActivityOpenGles" />
-        <activity android:name=".fragment.fragment2.activity.ActivityOpenGlestwo" />
-        <activity android:name=".design.factory.FactorySendActivity" />
-        <activity android:name=".design.decorator.DecortorTestActivity" />
-        <activity android:name=".design.adapter.AdapterTestActivity" />
-        <activity android:name=".fragment.fragment4.activity.ShowImageActivity" />
-        <activity android:name=".fragment.fragment4.activity.ClickActivity" />
-        <activity android:name=".fragment.fragment4.activity.SimpleActivity" />
-        <activity android:name=".fragment.fragment4.activity.NetworkActivity" />
-        <activity android:name=".fragment.fragment4.activity.LoadImageActivity" />
-        <activity android:name=".fragment.fragment2.activity.ArcCicleActivity" />
-        <activity android:name=".fragment.fragment2.activity.XuanZhuanActivity" />
-
-        <provider
-            android:name=".provider.ContactProvider"
-            android:authorities="provider.ContactProvider" />
-        <provider
-            android:name=".provider.SmsProvider"
-            android:authorities="provider.SmsProvider" />
+        <activity android:name=".ui.fragment4.activity.ActivityImageLoader"/>
+        <activity android:name=".ui.fragment4.activity.ActivityListViewRefresh"/>
+        <activity android:name=".ui.fragment4.activity.ActivityOne"/>
+        <activity android:name=".ui.fragment4.activity.ActivityTextInputLayout"/>
+        <activity android:name=".ui.fragment4.activity.ActivityTwo"/>
+        <activity android:name=".ui.fragment4.activity.ActivityListPup"/>
+        <activity android:name=".greendao.ActivityGreenDao"/>
+        <activity android:name=".ui.fragment4.activity.OKHttpActivity"/>
+        <activity android:name=".retrofit.ActivityRetrofit"/>
+        <activity android:name=".ui.fragment2.activity.ActivityBaiDuMap"/>
+        <activity android:name=".ui.fragment2.activity.ActivityGoTo"/>
+        <activity android:name=".ui.fragment2.activity.ActivityOpenGles"/>
+        <activity android:name=".ui.fragment2.activity.ActivityOpenGlestwo"/>
+        <activity android:name=".design.factory.FactorySendActivity"/>
+        <activity android:name=".design.decorator.DecortorTestActivity"/>
+        <activity android:name=".design.adapter.AdapterTestActivity"/>
+        <activity android:name=".ui.fragment4.activity.ShowImageActivity"/>
+        <activity android:name=".ui.fragment4.activity.ClickActivity"/>
+        <activity android:name=".ui.fragment4.activity.SimpleActivity"/>
+        <activity android:name=".ui.fragment4.activity.NetworkActivity"/>
+        <activity android:name=".ui.fragment4.activity.LoadImageActivity"/>
+        <activity android:name=".ui.fragment2.activity.ArcCicleActivity"/>
+        <activity android:name=".ui.fragment2.activity.XuanZhuanActivity"/>
+        <activity android:name=".ui.fragment2.activity.RecyclerViewActivity"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="eHTjuxNTEPNvcliVc3QZnekcVMPIwlMM" />
+            android:value="eHTjuxNTEPNvcliVc3QZnekcVMPIwlMM"/>
 
         <receiver
             android:name=".NetWorkStatusReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" />
+            android:process=":remote"/>
 
-        <activity android:name=".login.ui.LoginActivity" />
+        <activity android:name=".login.ui.LoginActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -103,7 +97,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/filepaths"/>
         </provider>
     </application>
 

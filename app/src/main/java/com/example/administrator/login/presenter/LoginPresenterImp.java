@@ -20,8 +20,9 @@ public class LoginPresenterImp implements LoginPresenter, LoginInteractor.OnLogi
 
     @Override
     public void verifyIdentity(String userName, String Password) {
-        if (loginView != null)
+        if (loginView != null) {
             loginView.showProgressbar();
+        }
         loginInteractor.LoginNet(userName, Password, this);
 
     }
