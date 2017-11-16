@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import com.example.administrator.R;
 import com.example.administrator.base.BaseFragment;
 import com.example.administrator.utils.ToastUtils;
-import com.example.administrator.view.HorizontalScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +28,14 @@ import java.util.List;
 public class Fragment3 extends BaseFragment implements  TabLayout.OnTabSelectedListener {
     //String url = "http://www.huhst.edu.cn:8001/";
     private TabLayout tab;
-    public HorizontalScrollViewPager mViewPager;
+    public ViewPager mViewPager;
     private Toolbar toolbar;
     private List<Pair<String, Fragmenta>> items;
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, null);
         tab = (TabLayout) view.findViewById(R.id.tab);
-        mViewPager = (HorizontalScrollViewPager) view.findViewById(R.id.viewPager);
+        mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override

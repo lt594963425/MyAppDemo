@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,10 +20,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.R;
-import com.example.administrator.adapter.CommonAdapter;
-import com.example.administrator.adapter.HeaderAndFooterWrapper;
-import com.example.administrator.adapter.LoadMoreWrapper;
-import com.example.administrator.adapter.ViewHolder;
+import com.example.administrator.recyclerviewadapter.adapter.CommonAdapter;
+import com.example.administrator.recyclerviewadapter.base.ViewHolder;
+import com.example.administrator.recyclerviewadapter.wrapper.HeaderAndFooterWrapper;
+import com.example.administrator.recyclerviewadapter.wrapper.LoadMoreWrapper;
 import com.example.administrator.ui.wrapper.EmptyWrapper;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
@@ -59,12 +60,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recylerview_add);
+        Log.e("RecyclerViewActivity","onCreate");
         mList = new ArrayList<>(Arrays.asList(imagess));
         initDatas();
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_add);
+        mRecyclerView =  findViewById(R.id.recyclerView_add);
 //        mRecyclerView.setHasFixedSize(true);
-        //  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+          mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //   mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //      mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -77,7 +78,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
         };
 
         initHeaderAndFooter();
-        initEmptyView();
+        //initEmptyView();
         //加载更多
         mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
         mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);

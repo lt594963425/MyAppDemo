@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
-import com.example.administrator.adapter.HeaderAndFooterWrapper;
+import com.example.administrator.recyclerviewadapter.wrapper.HeaderAndFooterWrapper;
 import com.example.administrator.view.ItemOffsetDecoration;
 
 import java.util.ArrayList;

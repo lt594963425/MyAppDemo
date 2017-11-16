@@ -15,45 +15,31 @@
     limitations under the License.
 -->
 <resources>
-    <attr name="colorBackground" format="color" />
-    <attr name="pagerBackground" format="color" />
-    <attr name="darkTextColor" format="color" />
-    <attr name="lightTextColor" format="color" />
-
+    <attr name="colorBackground" format="color"/>
+    <attr name="pagerBackground" format="color"/>
+    <attr name="darkTextColor" format="color"/>
+    <attr name="lightTextColor" format="color"/>
+    <!--搜索-->
     <declare-styleable name="MaterialSearchView">
-        <attr name="searchBackground" format="integer" />
-        <attr name="searchVoiceIcon" format="integer" />
-        <attr name="searchCloseIcon" format="integer" />
-        <attr name="searchBackIcon" format="integer" />
-        <attr name="searchSuggestionIcon" format="integer" />
-        <attr name="searchSuggestionBackground" format="integer" />
-        <attr name="android:hint" />
-        <attr name="android:textColor" />
-        <attr name="android:textColorHint" />
-        <attr name="android:inputType" />
+        <attr name="searchBackground" format="integer"/>
+        <attr name="searchVoiceIcon" format="integer"/>
+        <attr name="searchCloseIcon" format="integer"/>
+        <attr name="searchBackIcon" format="integer"/>
+        <attr name="searchSuggestionIcon" format="integer"/>
+        <attr name="searchSuggestionBackground" format="integer"/>
+        <attr name="android:hint"/>
+        <attr name="android:textColor"/>
+        <attr name="android:textColorHint"/>
+        <attr name="android:inputType"/>
+    </declare-styleable>
+    <!--圆形头像布局-->
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_color" format="color"/>
+        <attr name="civ_border_overlay" format="boolean"/>
+        <attr name="civ_fill_color" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="CircleImageView">
-        <attr name="civ_border_width" format="dimension" />
-        <attr name="civ_border_color" format="color" />
-        <attr name="civ_border_overlay" format="boolean" />
-        <attr name="civ_fill_color" format="color" />
-    </declare-styleable>
-    <declare-styleable name="NumberProgressBar">
-        <attr name="progress_current" format="integer"/>
-        <attr name="progress_max" format="integer"/>
-        <attr name="progress_unreached_color" format="color"/>
-        <attr name="progress_reached_color" format="color"/>
-        <attr name="progress_reached_bar_height" format="dimension"/>
-        <attr name="progress_unreached_bar_height" format="dimension"/>
-        <attr name="progress_text_size" format="dimension"/>
-        <attr name="progress_text_color" format="color"/>
-        <attr name="progress_text_offset" format="dimension"/>
-        <attr name="progress_text_visibility" format="enum">
-            <enum name="visible" value="0"/>
-            <enum name="invisible" value="1"/>
-        </attr>
-    </declare-styleable>
 
     <declare-styleable name="ProgressPieView">
         <attr name="android:text"/>
@@ -100,4 +86,37 @@
         <attr name="svb_targetRotateY" format="float"/>
         <attr name="svb_animation" format="reference"/>
     </declare-styleable>
+    <!--百分比布局-->
+    <declare-styleable name="PercentLayout_Layout">
+        <attr name="layout_widthPercent" format="string"/>
+        <attr name="layout_heightPercent" format="string"/>
+
+        <attr name="layout_marginPercent" format="string"/>
+        <attr name="layout_marginLeftPercent" format="string"/>
+        <attr name="layout_marginTopPercent" format="string"/>
+        <attr name="layout_marginRightPercent" format="string"/>
+        <attr name="layout_marginBottomPercent" format="string"/>
+        <attr name="layout_marginStartPercent" format="string"/>
+        <attr name="layout_marginEndPercent" format="string"/>
+
+        <attr name="layout_textSizePercent" format="string"/>
+
+        <attr name="layout_maxWidthPercent" format="string"/>
+        <attr name="layout_maxHeightPercent" format="string"/>
+        <attr name="layout_minWidthPercent" format="string"/>
+        <attr name="layout_minHeightPercent" format="string"/>
+
+        <attr name="layout_paddingPercent" format="string"/>
+        <attr name="layout_paddingTopPercent" format="string"/>
+        <attr name="layout_paddingBottomPercent" format="string"/>
+        <attr name="layout_paddingLeftPercent" format="string"/>
+        <attr name="layout_paddingRightPercent" format="string"/>
+    </declare-styleable>
+
+    <!-- 下拉刷新组件自定义属性 -->
+    <declare-styleable name="PullToRefresh">
+        <attr name="header_indicator" format="string"/>
+        <attr name="footer_indicator" format="string"/>
+    </declare-styleable>
+
 </resources>

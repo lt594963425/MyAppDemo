@@ -48,10 +48,11 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_two, null);
-        btn1 =  view.findViewById(R.id.btn_baidumap);
-        btn2 =  view.findViewById(R.id.btn_retrofit);
-        btn3 =  view.findViewById(R.id.btn_rxandroid);
-        btn4 =  view.findViewById(R.id.btn_OpenGLES);
+        btn1 = view.findViewById(R.id.btn_baidumap);
+        btn2 = view.findViewById(R.id.btn_retrofit);
+        btn3 = view.findViewById(R.id.btn_rxandroid);
+        btn4 = view.findViewById(R.id.btn_OpenGLES);
+
         view.findViewById(R.id.btn_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +71,12 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
                 openActivity(RecyclerViewActivity.class);
             }
         });
+        view.findViewById(R.id.btn6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         initSensor();
 
         return view;
@@ -78,7 +84,7 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
 
     private void initSensor() {
         // 实例化传感器管理者
-        mSensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         // 初始化加速度传感器
         accelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -107,15 +113,17 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
                 Sensor.TYPE_MAGNETIC_FIELD);
         super.onResume();
     }
+
     @Override
     public void onStop() {
         // unregister listener
         mSensorManager.unregisterListener(new MySensorEventListener());
         super.onStop();
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_baidumap:
                 openActivity(ActivityBaiDuMap.class);
                 break;
@@ -128,8 +136,11 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
             case R.id.btn_OpenGLES:
                 openActivity(ActivityOpenGlestwo.class);
                 break;
+            default:
+                break;
         }
     }
+
     // 计算方向
     private void calculateOrientation() {
         float[] values = new float[3];

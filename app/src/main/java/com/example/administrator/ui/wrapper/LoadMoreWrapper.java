@@ -6,8 +6,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.administrator.adapter.ViewHolder;
-import com.example.administrator.adapter.WrapperUtils;
+import com.example.administrator.recyclerviewadapter.base.ViewHolder;
+import com.example.administrator.recyclerviewadapter.utils.WrapperUtils;
 
 /**
  * Created by zhy on 16/6/23.

@@ -19,7 +19,8 @@
             android:background="@color/white"
             app:cardCornerRadius="10dp">
 
-            <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.youth.banner.Banner
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -143,5 +144,7 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:orientation="vertical"/>
+
+
     </LinearLayout>
 </ScrollView>
