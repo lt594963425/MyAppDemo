@@ -1,5 +1,7 @@
 <resources>
-    <style name="AppTheme" parent="AppTheme.Base" />
+    <style name="AppTheme" parent="Theme.AppCompat.Light" >
+       <!-- <item name="android:windowBackground">@drawable/logo</item>-->
+    </style>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
@@ -8,6 +10,7 @@
         <item name="colorPrimary">@color/white</item>
         <!--状态栏颜色-->
         <item name="colorPrimaryDark">@color/colorcircleblue</item>
+        <item name="android:listDivider">@drawable/divider_bg</item>
         <!--Window color-->
         <item name="android:windowBackground">@color/white</item>
         <item name="android:actionMenuTextAppearance">@style/CActionMenuTextAppearance</item>

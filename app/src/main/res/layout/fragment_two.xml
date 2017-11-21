@@ -7,6 +7,7 @@
     >
 
     <LinearLayout
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:text="Hello RxJava!"
-            android:textSize="40sp" />
+            android:textSize="40sp"/>
 
         <Button
             android:id="@+id/btn_baidumap"
@@ -28,73 +29,105 @@
             android:background="@drawable/bg_white_line"
             android:clickable="true"
             android:padding="2dp"
-            android:text="百度地图" />
+            android:text="百度地图"/>
 
 
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn_retrofit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:text="去哪儿" />
+            android:text="去哪儿"/>
 
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn_rxandroid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="打开摄像头TextureView" />
+            android:text="打开摄像头TextureView"
+            android:textAllCaps="false"/>
 
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn_OpenGLES"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="Opengles" />
+            android:text="Opengles"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="圆弧比例" />
+            android:text="圆弧比例"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn_xuanzh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="旋转翻转" />
+            android:text="旋转翻转"
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="改进之后的HeaderAndFooter" />
+            android:text=""
+            android:textAllCaps="false"/>
+
         <Button
-            android:layout_marginTop="2dp"
             android:id="@+id/btn7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:textAllCaps="false"
-            android:text="recylerview" />
+            android:text="recylerview"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:text="orc"
+            android:textAllCaps="false"/>
+        <Button
+           android:id="@+id/btn9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:text="event"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:text="dailogFragment"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
 </ScrollView>

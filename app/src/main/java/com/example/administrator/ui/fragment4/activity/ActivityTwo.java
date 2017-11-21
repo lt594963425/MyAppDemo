@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +46,10 @@ public class ActivityTwo extends BaseActivity {
         drawerlayout.addDrawerListener(toggle);
 
         recyclerView = (RecyclerView) findViewById(R.id.rvw);
-        GridLayoutManager gm = new GridLayoutManager(this,3);
-        gm.setOrientation(GridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(gm);
+     /*   GridLayoutManager gm = new GridLayoutManager(this,3);
+        gm.setOrientation(GridLayoutManager.VERTICAL);*/
+
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new MyRecyclerView());
 
         final SwipeRefreshLayout mRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
@@ -96,9 +97,13 @@ public class ActivityTwo extends BaseActivity {
         public MyViewHolder(View itemView) {
             super(itemView);
             tvs = (TextView) itemView.findViewById(R.id.tv);
+            ViewGroup.LayoutParams lp = tvs.getLayoutParams();
+            lp.height =  (int) (200 + Math.random() * 400) ;
+            tvs.setLayoutParams(lp);
         }
 
         public void setDate(final int position) {
+
             tvs.setText("我是第" + position + "位置");
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

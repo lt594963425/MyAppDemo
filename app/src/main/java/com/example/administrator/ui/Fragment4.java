@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.administrator.R;
+import com.example.administrator.base.BaseFragment;
 import com.example.administrator.design.adapter.AdapterTestActivity;
 import com.example.administrator.design.decorator.DecortorTestActivity;
 import com.example.administrator.design.factory.FactorySendActivity;
-import com.example.administrator.login.ui.LoginActivity;
-import com.example.administrator.R;
-import com.example.administrator.base.BaseFragment;
+import com.example.administrator.greendao.ActivityGreenDao;
+import com.example.administrator.loginMvp.ui.LoginActivity;
+import com.example.administrator.retrofit.ActivityRetrofit;
 import com.example.administrator.ui.fragment4.activity.ActivityImageLoader;
 import com.example.administrator.ui.fragment4.activity.ActivityListViewRefresh;
 import com.example.administrator.ui.fragment4.activity.ActivityOne;
@@ -26,9 +28,7 @@ import com.example.administrator.ui.fragment4.activity.NetworkActivity;
 import com.example.administrator.ui.fragment4.activity.OKHttpActivity;
 import com.example.administrator.ui.fragment4.activity.ShowImageActivity;
 import com.example.administrator.ui.fragment4.activity.SimpleActivity;
-import com.example.administrator.fragmentHelp.GlideCircleTransform;
-import com.example.administrator.greendao.ActivityGreenDao;
-import com.example.administrator.retrofit.ActivityRetrofit;
+import com.example.administrator.view.GlideCircleTransform;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,11 +39,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class Fragment4 extends BaseFragment implements View.OnClickListener {
 
+
+
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_four, null);
-        CircleImageView circleimage = (CircleImageView) view.findViewById(R.id.profile_image);
-        ImageView proFileImage = (ImageView) view.findViewById(R.id.circle_image);
+        CircleImageView circleimage =  view.findViewById(R.id.profile_image);
+        ImageView proFileImage = view.findViewById(R.id.circle_image);
+
+
+
         view.findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +58,6 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
             }
         });
         //加载网络图片
-        //  proFileImage.setImageResource(R.drawable.hed);
         String path1 = "http://img3.imgtn.bdimg.com/it/u=3242709860,2221903223&fm=214&gp=0.jpg";
         String path = "http://p3.so.qhmsg.com/bdr/326__/t018da60b972e086a1d.jpg";
         Glide.with(getContext())
@@ -119,8 +123,8 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initData() {
-    }
 
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

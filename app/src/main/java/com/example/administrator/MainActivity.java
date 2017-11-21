@@ -20,11 +20,8 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.example.administrator.base.BaseActivity;
-import com.example.administrator.ui.Fragment1;
-import com.example.administrator.ui.Fragment2;
-import com.example.administrator.ui.Fragment3;
-import com.example.administrator.ui.Fragment4;
-import com.example.administrator.fragmentHelp.MyFragmentAdapter;
+import com.example.administrator.ui.adapter.FixPagerAdapter;
+import com.example.administrator.ui.factory.FragmentFactory;
 import com.example.administrator.utils.ToastUtils;
 import com.example.administrator.view.materialsearchview.MaterialSearchView;
 
@@ -32,25 +29,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-public class MainActivity extends BaseActivity implements
-        ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener, Toolbar.OnMenuItemClickListener {
+/**
+ * @author LiuTao
+ */
+public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener, Toolbar.OnMenuItemClickListener {
     //private Realm realm;
     private FragmentTabHost mTabHost;
-    private Class fragmentArray[] = {Fragment1.class, Fragment2.class, Fragment3.class, Fragment4.class};
-    private static int imageViewArray[] = {R.drawable.tab_view_btn, R.drawable.tab_view_btn, R.drawable.tab_view_btn, R.drawable.tab_view_btn};
-    private static String textViewArray[] = {"首页", "分类", "天气", "大学"};
-    private List<Fragment> list = new ArrayList<Fragment>();
-    private ViewPager vp;
+    private static int tabImages[] = {
+            R.drawable.tab_view_btn,
+            R.drawable.tab_view_btn,
+            R.drawable.tab_view_btn,
+            R.drawable.tab_view_btn};
+    private static String titles[] = {"首页", "分类", "天气", "大学"};
+    private List<Fragment> mFragments;
+    private ViewPager mViewPager;
     private MaterialSearchView mSearchView;
-    public ArrayList<String> mDatas =null;
+    public ArrayList<String> mDatas = null;
+    private FixPagerAdapter mFixPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initToolbar();
         initData();
-        initView();//初始化控件
-        initPage();//初始化页面
+        initViewPagerFargment();//初始化控件
+        initSearchView();
     }
 
     /**
@@ -64,48 +69,67 @@ public class MainActivity extends BaseActivity implements
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
     }
+
     private void initData() {
         mDatas = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             mDatas.add(i, String.valueOf(i));
         }
     }
-    //    控件初始化控件
-    private void initView() {
 
-        Toolbar mToolbar = findViewById(R.id.main_toolbar);
-        mToolbar.setTitle("有码走天下");
-        mToolbar.inflateMenu(R.menu.activity_main_toolbar);
-        mToolbar.setOnMenuItemClickListener(this);
-
-
-        vp = (ViewPager) findViewById(R.id.pager);
-
-        /*实现OnPageChangeListener接口,目的是监听Tab选项卡的变化，然后通知ViewPager适配器切换界面*/
-        /*简单来说,是为了让ViewPager滑动的时候能够带着底部菜单联动*/
-
-        vp.addOnPageChangeListener(this);//设置页面切换时的监听器
-        vp.setOffscreenPageLimit(4);
-        /*实例化FragmentTabHost对象并进行绑定*/
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);//绑定tahost
+    private void initViewPagerFargment() {
+        mViewPager = findViewById(R.id.pager);
+        mTabHost = findViewById(android.R.id.tabhost);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                TabWidget widget = mTabHost.getTabWidget();
+                int oldFocusability = widget.getDescendantFocusability();
+                widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);//设置View覆盖子类控件而直接获得焦点,防止被顶起
+                mTabHost.setCurrentTab(position);//根据位置Postion设置当前的Tab
+                //widget.setDescendantFocusability(oldFocusability);//设置取消分割线
+            }
+        });//设置页面切换时的监听器
+        mViewPager.setOffscreenPageLimit(4);
+        mFixPagerAdapter = new FixPagerAdapter(getSupportFragmentManager());
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
+            mFragments.add(FragmentFactory.createFragment(i));
+        }
+        mFixPagerAdapter.setFragments(mFragments);
+        mFixPagerAdapter.setTitles(titles);
+        mViewPager.setAdapter(mFixPagerAdapter);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);//绑定viewpager
-
-        /*实现setOnTabChangedListener接口,目的是为监听界面切换），然后实现TabHost里面图片文字的选中状态切换*/
-        /*简单来说,是为了当点击下面菜单时,上面的ViewPager能滑动到对应的Fragment*/
         mTabHost.setOnTabChangedListener(this);
-
-        int count = imageViewArray.length;
-        /*新建Tabspec选项卡并设置Tab菜单栏的内容和绑定对应的Fragment*/
-        for (int i = 0; i < count; i++) {
-            // 给每个Tab按钮设置标签、图标和文字
-            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(textViewArray[i])
+        for (int i = 0; i < tabImages.length; i++) {
+            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(titles[i])
                     .setIndicator(getTabItemView(i));
-            // 将Tab按钮添加进Tab选项卡中，并绑定Fragment
-            mTabHost.addTab(tabSpec, fragmentArray[i], null);
+            mTabHost.addTab(tabSpec, mFragments.get(i).getClass(), null);
             mTabHost.setTag(i);
             mTabHost.getTabWidget().getChildAt(i)
                     .setBackgroundResource(R.drawable.selector_tab_background);//设置Tab被选中的时候颜色改变
         }
+        mTabHost.getTabWidget().setDividerDrawable(null);
+    }
+
+    private View getTabItemView(int i) {
+        View view = LayoutInflater.from(this).inflate(R.layout.tab_content, null);
+        ImageView imageView = view.findViewById(R.id.tab_imageview);
+        TextView mTextView = view.findViewById(R.id.tab_textview);
+        imageView.setImageResource(tabImages[i]);
+        mTextView.setText(titles[i]);
+        return view;
+    }
+
+    private void initToolbar() {
+        Toolbar mToolbar = findViewById(R.id.main_toolbar);
+        mToolbar.setTitle("有码走天下");
+        mToolbar.inflateMenu(R.menu.activity_main_toolbar);
+        mToolbar.setOnMenuItemClickListener(this);
+    }
+
+
+    private void initSearchView() {
         mSearchView = findViewById(R.id.search_view);
         mSearchView.setVoiceSearch(false);
         mSearchView.setHint("搜索");
@@ -138,14 +162,14 @@ public class MainActivity extends BaseActivity implements
             public boolean onQueryTextSubmit(String query) {
                 Snackbar.make(findViewById(R.id.container), "Query: " + query, Snackbar.LENGTH_LONG)
                         .show();
-                ToastUtils.showToast("点击了:"+query);
+                ToastUtils.showToast("点击了:" + query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 //Do some magic
-                ToastUtils.showToast("改变了:"+newText);
+                ToastUtils.showToast("改变了:" + newText);
                 return false;
             }
         });
@@ -165,58 +189,10 @@ public class MainActivity extends BaseActivity implements
         });
     }
 
-    /*初始化Fragment*/
-    private void initPage() {
-        Fragment1 fragment1 = new Fragment1();
-        Fragment2 fragment2 = new Fragment2();
-        Fragment3 fragment3 = new Fragment3();
-        Fragment4 fragment4 = new Fragment4();
-        list.add(fragment1);
-        list.add(fragment2);
-        list.add(fragment3);
-        list.add(fragment4);
-        //绑定Fragment适配器
-        vp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), list));
-        mTabHost.getTabWidget().setDividerDrawable(null);
-    }
-
-    private View getTabItemView(int i) {
-        //将xml布局转换为view对象
-        View view = LayoutInflater.from(this).inflate(R.layout.tab_content, null);
-        //利用view对象，找到布局中的组件,并设置内容，然后返回视图
-        ImageView mImageView = (ImageView) view
-                .findViewById(R.id.tab_imageview);
-        TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
-        mImageView.setBackgroundResource(imageViewArray[i]);
-        mTextView.setText(textViewArray[i]);
-        return view;
-    }
-
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-
-    }//arg0 ==1的时候表示正在滑动，arg0==2的时候表示滑动完毕了，arg0==0的时候表示什么都没做，就是停在那。
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-    }//表示在前一个页面滑动到后一个页面的时候，在前一个页面滑动前调用的方法
-
-    @Override
-    public void onPageSelected(int arg0) {//arg0是表示你当前选中的页面位置Postion，这事件是在你页面跳转完毕的时候调用的。
-        TabWidget widget = mTabHost.getTabWidget();
-        int oldFocusability = widget.getDescendantFocusability();
-        widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);//设置View覆盖子类控件而直接获得焦点,防止被顶起
-        mTabHost.setCurrentTab(arg0);//根据位置Postion设置当前的Tab
-        widget.setDescendantFocusability(oldFocusability);//设置取消分割线
-
-    }
-
     @Override
     public void onTabChanged(String tabId) {//Tab改变的时候调用
         int position = mTabHost.getCurrentTab();
-        vp.setCurrentItem(position);//把选中的Tab的位置赋给适配器，让它控制页面切换
+        mViewPager.setCurrentItem(position);//把选中的Tab的位置赋给适配器，让它控制页面切换
     }
 
     @Override

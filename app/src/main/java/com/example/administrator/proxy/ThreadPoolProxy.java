@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  *     3.其中get方法可以接收结果,get方法还是一个阻塞方法,还可以得到任务执行过程中抛出的异常信息
  */
 public class ThreadPoolProxy {
-    ThreadPoolExecutor mExecutor;
+    private ThreadPoolExecutor mExecutor;
     private int mCorePoolSize;//核心池的大小
     private int mMaximumPoolSize;//线程最大线程数
 
@@ -74,4 +74,7 @@ public class ThreadPoolProxy {
         initThreadPoolExecutor();
         mExecutor.remove(task);
     }
+
+
+
 }

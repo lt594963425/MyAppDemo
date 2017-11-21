@@ -25,16 +25,16 @@ import java.util.List;
  * Fragment3
  * Created by liu_tao on 16/5/23.
  */
-public class Fragment3 extends BaseFragment implements  TabLayout.OnTabSelectedListener {
+public class Fragment3 extends BaseFragment{
     //String url = "http://www.huhst.edu.cn:8001/";
-    private TabLayout tab;
+    private TabLayout mTabLayout;
     public ViewPager mViewPager;
     private Toolbar toolbar;
     private List<Pair<String, Fragmenta>> items;
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, null);
-        tab = (TabLayout) view.findViewById(R.id.tab);
+        mTabLayout = (TabLayout) view.findViewById(R.id.tab);
         mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -49,8 +49,7 @@ public class Fragment3 extends BaseFragment implements  TabLayout.OnTabSelectedL
 
     @Override
     protected void initData() {
-        items = new ArrayList<Pair<String, Fragmenta>>();
-
+        items = new ArrayList<>();
         items.add(new Pair<>("OkGo", new Fragmenta()));
         items.add(new Pair<>("okhttp", new Fragmenta()));
         items.add(new Pair<>("OkRx2", new Fragmenta()));
@@ -58,28 +57,18 @@ public class Fragment3 extends BaseFragment implements  TabLayout.OnTabSelectedL
         items.add(new Pair<>("OkDownload", new Fragmenta()));
         items.add(new Pair<>("OkUpload", new Fragmenta()));
         mViewPager.setAdapter(new MainAdapter(getChildFragmentManager()));
-        tab.setupWithViewPager(mViewPager);
-        tab.addOnTabSelectedListener(this);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tab.addOnTabSelectedListener(this);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+              mViewPager.setCurrentItem(position);
+            }
+        });
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-       int position = tab.getPosition();
-        mViewPager.setCurrentItem(position);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-    }
-
-
-    /*  //webView = (WebView) view.findViewById(R.id.webView);
-      //WebSettings settings = webView.getSettings();
-      //initWebview();*/
     private class MainAdapter extends FragmentPagerAdapter {
 
         MainAdapter(FragmentManager fm) {
@@ -107,39 +96,4 @@ public class Fragment3 extends BaseFragment implements  TabLayout.OnTabSelectedL
         toolbar.setTitle(title);
     }
 
-//    private void initWebview() {
-//        mDialog = WeiboDialogUtils.createLoadingDialog(getActivity(),"加载中");
-//        //设计进度条
-//        //progressBar = ProgressDialog.show(getActivity(), null, "正在进入网页，请稍后…");
-//        WebSettings settings = webView.getSettings();
-//        webView.loadUrl(url);
-//        settings.setJavaScriptEnabled(true);
-//        // webView.loadUrl("http://baidu.com");
-//        // alertDialog = new AlertDialog.Builder(getActivity()).create();
-//
-//        webView.setWebViewClient(new MyWebViewClient());
-//
-//    }
-//
-//
-//    class MyWebViewClient extends android.webkit.WebViewClient {
-//
-//        @Override
-//        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            view.loadUrl(url);
-//            return true;
-//        }
-//
-//        @Override
-//        public void onPageFinished(WebView view, String url) {
-//            if (mDialog .isShowing()) {
-//                closeDialog(mDialog);
-//            }
-////            if (progressBar.isShowing()) {
-////                progressBar.dismiss();
-////            }
-//        }
-//
-//
-//    }
 }

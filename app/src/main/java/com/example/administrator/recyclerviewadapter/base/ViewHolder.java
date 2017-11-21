@@ -27,6 +27,9 @@ import android.widget.TextView;
  * @date 2017/11/15/015
  */
 
+
+
+
 public class ViewHolder extends RecyclerView.ViewHolder{
     private SparseArray<View> mViews;
     private View mConvertView;

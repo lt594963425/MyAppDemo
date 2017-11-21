@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.R;
 import com.example.administrator.recyclerviewadapter.adapter.CommonAdapter;
 import com.example.administrator.recyclerviewadapter.base.ViewHolder;
+import com.example.administrator.recyclerviewadapter.pullrefresh.PullToRefreshView;
 import com.example.administrator.recyclerviewadapter.wrapper.HeaderAndFooterWrapper;
 import com.example.administrator.recyclerviewadapter.wrapper.LoadMoreWrapper;
 import com.example.administrator.ui.wrapper.EmptyWrapper;
@@ -40,6 +41,7 @@ import java.util.List;
  */
 
 public class RecyclerViewActivity extends AppCompatActivity {
+    private static final String TAG = "RecyclerViewActivity";
     String[] imagess = new String[]{
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
@@ -55,17 +57,20 @@ public class RecyclerViewActivity extends AppCompatActivity {
     private EmptyWrapper mEmptyWrapper;
     private LoadMoreWrapper mLoadMoreWrapper;
     private List mList;
+    private PullToRefreshView mPullToRefreshView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recylerview_add);
-        Log.e("RecyclerViewActivity","onCreate");
+        mPullToRefreshView = findViewById(R.id.pullRefreshLayout);
         mList = new ArrayList<>(Arrays.asList(imagess));
+
         initDatas();
-        mRecyclerView =  findViewById(R.id.recyclerView_add);
+        mRecyclerView = findViewById(R.id.recyclerView_add);
 //        mRecyclerView.setHasFixedSize(true);
-          mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //   mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //      mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -76,10 +81,40 @@ public class RecyclerViewActivity extends AppCompatActivity {
                 holder.setText(R.id.item_recylear_iv, s + " : " + holder.getAdapterPosition() + " , " + holder.getLayoutPosition());
             }
         };
-
+        pullRefresh();
         initHeaderAndFooter();
         //initEmptyView();
-        //加载更多
+        //loadMoreData();
+        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Toast.makeText(RecyclerViewActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
+                mAdapter.notifyItemRemoved(position);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+    }
+    //下拉刷新， 上拉加载更多
+    private void pullRefresh() {
+        mPullToRefreshView.setPullDownEnable(true);
+        mPullToRefreshView.setListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.e(TAG,"onRefresh");
+            }
+
+            @Override
+            public void onLoadMore() {
+                Log.e(TAG,"onLoadMore");
+            }
+        });
+    }
+    //加载更多
+    private void loadMoreData() {
         mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
         mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
         mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
@@ -99,25 +134,13 @@ public class RecyclerViewActivity extends AppCompatActivity {
         });
 
         mRecyclerView.setAdapter(mLoadMoreWrapper);
-        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Toast.makeText(RecyclerViewActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
-                mAdapter.notifyItemRemoved(position);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
     }
 
     private void initEmptyView() {
         mEmptyWrapper = new EmptyWrapper(mAdapter);
         mEmptyWrapper.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, mRecyclerView, false));
     }
-
+    //加载头布局 和脚布局
     private void initHeaderAndFooter() {
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
         View view = LayoutInflater.from(this).inflate(R.layout.banner_layout, null);
@@ -126,9 +149,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
         Banner banner = view.findViewById(R.id.banner_head);
         //设置图片集合
         banner.setImages(mList).setImageLoader(new GlideImageLoader()).start();
-
         mHeaderAndFooterWrapper.addHeaderView(t1);
         mHeaderAndFooterWrapper.addHeaderView(view);
+        mRecyclerView.setAdapter(mHeaderAndFooterWrapper);
     }
 
     private void initDatas() {
@@ -162,9 +185,10 @@ public class RecyclerViewActivity extends AppCompatActivity {
             case R.id.action_staggered:
                 mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                 break;
+            default:
+                break;
         }
         mRecyclerView.setAdapter(mLoadMoreWrapper);
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -185,31 +209,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            /**
-             注意：
-             1.图片加载器由自己选择，这里不限制，只是提供几种使用方法
-             2.返回的图片路径为Object类型，由于不能确定你到底使用的那种图片加载器，
-             传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
-             切记不要胡乱强转！
-             */
-
             //Glide 加载图片简单用法
             Glide.with(context).load(path).into(imageView);
-//
-//            //Picasso 加载图片简单用法
-//            Picasso.with(context).load("").into(imageView);
-//
-//            //用fresco加载图片简单用法，记得要写下面的createImageView方法
-//            Uri uri = Uri.parse((String) path);
-//            imageView.setImageURI(uri);
         }
 
-   /*     //提供createImageView 方法，如果不用可以不重写这个方法，主要是方便自定义ImageView的创建
-        @Override
-        public ImageView createImageView(Context context) {
-            //使用fresco，需要创建它提供的ImageView，当然你也可以用自己自定义的具有图片加载功能的ImageView
-            SimpleDraweeView simpleDraweeView = new SimpleDraweeView(context);
-            return simpleDraweeView;
-        }*/
     }
 }

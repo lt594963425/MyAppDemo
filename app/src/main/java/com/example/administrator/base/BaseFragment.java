@@ -26,6 +26,10 @@ import android.view.ViewGroup;
 
 import com.example.administrator.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 若把初始化内容放到initData实现,就是采用Lazy方式加载的Fragment
  * 若不需要Lazy加载则initData方法内留空,初始化内容放到initViews即可
@@ -37,6 +41,7 @@ import com.example.administrator.R;
  */
 public abstract class BaseFragment extends Fragment {
 
+    private static SimpleDateFormat sdf;
     protected String fragmentTitle;             //fragment标题
     private boolean isVisible;                  //是否可见状态
     private boolean isPrepared;                 //标志位，View已经初始化完成。
@@ -129,5 +134,16 @@ public abstract class BaseFragment extends Fragment {
         Intent mIntent = new Intent(getActivity(), pClass);
         this.startActivityForResult(mIntent, i);
         getActivity().overridePendingTransition(R.anim.zoom_enter, R.anim.no_anim);
+    }
+    /*将字符串转为时间戳*/
+    public static long getStringToDate(String time) {
+        sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date = new Date();
+        try {
+            date = sdf.parse(String.valueOf(time));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
     }
 }

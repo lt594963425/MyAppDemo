@@ -1,12 +1,14 @@
 package com.example.administrator;
 
 import android.app.Application;
-import android.content.Context;
+import android.os.Process;
 
 import com.example.administrator.okHttp.OkHttpUtils;
 import com.example.administrator.okHttp.cookie.CookieJarImpl;
 import com.example.administrator.okHttp.cookie.store.SPCookieStore;
+import com.example.administrator.okHttp.https.HttpsUtils;
 import com.example.administrator.okHttp.log.LoggerInterceptor;
+import com.example.administrator.proxy.ThreadPoolProxyFactory;
 import com.example.administrator.utils.ACache;
 import com.example.administrator.utils.FileUtils;
 import com.example.administrator.utils.LogUtils;
@@ -25,14 +27,14 @@ import okhttp3.OkHttpClient;
  * Created by Fox on 2016/3/4.
  */
 public class MyApplication extends Application {
-    private static Context context;
+    private static MyApplication context;
     private static ACache mCache;
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-        //HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -44,24 +46,32 @@ public class MyApplication extends Application {
                         return true;
                     }
                 })
-//                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) //https
-           //     .cache(new Cache(context.getCacheDir(),10*1024*1024))  //安全的缓存，程序内部
+               .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) //https
+                //     .cache(new Cache(context.getCacheDir(),10*1024*1024))  //安全的缓存，程序内部
                 .cache(new Cache(new File(FileUtils.getCachePath(this), "okhttpCache"), 10 * 1024 * 1024))
                 .build();
         OkHttpUtils.initClient(okHttpClient);
+        ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(initThirdService);
 
-        mCache = ACache.get(this);
-        initLog();//log的初始化
+    }
+
+    public Runnable initThirdService = new Runnable() {
+        @Override
+        public void run() {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            mCache = ACache.get(getApplicationContext());
+            initLog();//log的初始化
         /*
          * 内存泄漏检测
          */
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
+            if (LeakCanary.isInAnalyzerProcess(getApplicationContext())) {
+                return;
+            }
+            LeakCanary.install((Application) getContext());
         }
-        LeakCanary.install(this);
-    }
+    };
 
-    public static Context getContext() {
+    public static MyApplication getContext() {
         return context;
     }
 

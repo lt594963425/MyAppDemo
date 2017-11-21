@@ -43,9 +43,11 @@ public class DragLayout extends FrameLayout {
         //1，创建视图帮助类
         dragHelper = ViewDragHelper.create(this, 1.0f, callback);
     }
-    public static  enum State{
-         Close,Open,Draging
-     }
+
+    public static enum State {
+        Close, Open, Draging
+    }
+
     private State statue = State.Close;
 
     public State getStatue() {
@@ -64,11 +66,14 @@ public class DragLayout extends FrameLayout {
      * 4,百分比
      * 5，根据percent的值判断关闭和开启状态
      */
-    public interface onDragChangedListener{
+    public interface onDragChangedListener {
         void onOpen();
+
         void onClose();
+
         void onGraging(float percent);
     }
+
     //定义接口变量
     private onDragChangedListener dragChangedListener;
 
@@ -86,7 +91,7 @@ public class DragLayout extends FrameLayout {
         //1 决定那个孩子是否能被拖拽
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-        Log.i(TAG,"DragLayout,tryCaptureView,"+child);
+            Log.i(TAG, "DragLayout,tryCaptureView," + child);
             return true;
         }
 
@@ -169,20 +174,21 @@ public class DragLayout extends FrameLayout {
 
 
     };
-private   float percent;
+    private float percent;
+
     /**
      * 拖拽时的伴随动画
      */
     private void dragAnimation() {
         //0.0-1.0
-        percent = mainContent.getLeft()*1.0f/mRange;
-        State newstatue= statue;
+        percent = mainContent.getLeft() * 1.0f / mRange;
+        State newstatue = statue;
         statue = changeState(percent);
-        Log.i(TAG,"DragLayout,dragAnimation,percent:"+percent);
-        if(dragChangedListener!= null){
+        Log.i(TAG, "DragLayout,dragAnimation,percent:" + percent);
+        if (dragChangedListener != null) {
             dragChangedListener.onGraging(percent);
         }
-        if (newstatue !=statue&&dragChangedListener != null) {
+        if (newstatue != statue && dragChangedListener != null) {
             if (statue == State.Open) {
                 dragChangedListener.onOpen();
             } else if (statue == State.Close) {
@@ -195,25 +201,26 @@ private   float percent;
 
     private State changeState(float percent) {
 
-        if(percent == 0){         //关闭状态
-            return   statue = State.Close;
+        if (percent == 0) {         //关闭状态
+            return statue = State.Close;
 
 
-        }else  if (percent == 1) {//打开状态
-           return statue = State.Open;
+        } else if (percent == 1) {//打开状态
+            return statue = State.Open;
 
         }
         return State.Draging;
     }
 
+    //颜色估值器
     private void viewAnimation(float percent) {
-        ViewHelper.setScaleX(menuContent,evaluate(percent,0.5f,1.0f));
-        ViewHelper.setScaleY(menuContent,evaluate(percent,0.5f,1.0f));
-        ViewHelper.setTranslationX(menuContent,evaluate(percent,-getWith/2,0f));
+        ViewHelper.setScaleX(menuContent, evaluate(percent, 0.5f, 1.0f));
+        ViewHelper.setScaleY(menuContent, evaluate(percent, 0.5f, 1.0f));
+        ViewHelper.setTranslationX(menuContent, evaluate(percent, -getWith / 2, 0f));
         //透明度动画
-        ViewHelper.setAlpha(menuContent,evaluate(percent,0.2f,1.0f));
+        ViewHelper.setAlpha(menuContent, evaluate(percent, 0.2f, 1.0f));
         //过渡色动画
-        getBackground().setColorFilter((Integer) evaluateColor(percent, Color.BLACK,Color.TRANSPARENT), PorterDuff.Mode.SRC_OVER);
+        getBackground().setColorFilter((Integer) evaluateColor(percent, Color.BLACK, Color.TRANSPARENT), PorterDuff.Mode.SRC_OVER);
 //        menuContent.setScaleX(percent/2+0.5f);
 //        menuContent.setScaleY(percent/2+0.5f);
 //        menuContent.setTranslationX(0);
@@ -233,7 +240,8 @@ private   float percent;
     }
 
     /**
-     *颜色估值器
+     * 颜色估值器
+     *
      * @param fraction
      * @param startValue
      * @param endValue
@@ -252,10 +260,10 @@ private   float percent;
         int endG = (endInt >> 8) & 0xff;
         int endB = endInt & 0xff;
 
-        return (int)((startA + (int)(fraction * (endA - startA))) << 24) |
-                (int)((startR + (int)(fraction * (endR - startR))) << 16) |
-                (int)((startG + (int)(fraction * (endG - startG))) << 8) |
-                (int)((startB + (int)(fraction * (endB - startB))));
+        return (int) ((startA + (int) (fraction * (endA - startA))) << 24) |
+                (int) ((startR + (int) (fraction * (endR - startR))) << 16) |
+                (int) ((startG + (int) (fraction * (endG - startG))) << 8) |
+                (int) ((startB + (int) (fraction * (endB - startB))));
     }
 
     /**
@@ -317,7 +325,7 @@ private   float percent;
     //拦截事件
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-    // 由 ViewDragHelper 判断触摸事件是否该拦截
+        // 由 ViewDragHelper 判断触摸事件是否该拦截
         return dragHelper.shouldInterceptTouchEvent(ev);
     }
 
@@ -326,8 +334,8 @@ private   float percent;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //处理转交事件
-            dragHelper.processTouchEvent(event);
-            return true;
+        dragHelper.processTouchEvent(event);
+        return true;
 
 
     }

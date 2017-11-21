@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.R;
@@ -19,40 +18,58 @@ import com.example.administrator.ui.fragment2.activity.ActivityGoTo;
 import com.example.administrator.ui.fragment2.activity.ActivityOpenGles;
 import com.example.administrator.ui.fragment2.activity.ActivityOpenGlestwo;
 import com.example.administrator.ui.fragment2.activity.ArcCicleActivity;
+import com.example.administrator.ui.fragment2.activity.EventBusActivity;
+import com.example.administrator.ui.fragment2.activity.LoginDialogActivity;
 import com.example.administrator.ui.fragment2.activity.RecyclerViewActivity;
+import com.example.administrator.ui.fragment2.activity.TestORCActivity;
 import com.example.administrator.ui.fragment2.activity.XuanZhuanActivity;
+import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
 
 
 /**
  * Fragment2
  * Created by liu_tao on 16/5/23.
  */
-public class Fragment2 extends BaseFragment implements View.OnClickListener {
+public class Fragment2 extends BaseFragment {
 
     private static final String TAG = "---Fragment2";
-    private Button btn1;
-    private Button btn2;
-    private Button btn3;
-    private Button btn4;
     private SensorManager mSensorManager;
-
     private Sensor accelerometer; // 加速度传感器
     private Sensor magnetic; // 地磁场传感器
-
     private TextView azimuthAngle;
-
     private float[] accelerometerValues = new float[3];
     private float[] magneticFieldValues = new float[3];
     private View view;
 
+
+
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_two, null);
-        btn1 = view.findViewById(R.id.btn_baidumap);
-        btn2 = view.findViewById(R.id.btn_retrofit);
-        btn3 = view.findViewById(R.id.btn_rxandroid);
-        btn4 = view.findViewById(R.id.btn_OpenGLES);
-
+        view.findViewById(R.id.btn_baidumap).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ActivityBaiDuMap.class);
+            }
+        });
+        view.findViewById(R.id.btn_retrofit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ActivityGoTo.class);
+            }
+        });
+        view.findViewById(R.id.btn_rxandroid).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ActivityOpenGles.class);
+            }
+        });
+        view.findViewById(R.id.btn_OpenGLES).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ActivityOpenGlestwo.class);
+            }
+        });
         view.findViewById(R.id.btn_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,11 +91,28 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.btn6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openActivity(PhotoOrcActivity.class);
+            }
+        });
+        view.findViewById(R.id.btn8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(TestORCActivity.class);
+            }
+        });
+        view.findViewById(R.id.btn9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(EventBusActivity.class);
+            }
+        });
+        view.findViewById(R.id.btn10).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(LoginDialogActivity.class);
             }
         });
         initSensor();
-
         return view;
     }
 
@@ -96,10 +130,7 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initData() {
-        btn1.setOnClickListener(this);
-        btn2.setOnClickListener(this);
-        btn3.setOnClickListener(this);
-        btn4.setOnClickListener(this);
+
 
     }
 
@@ -121,25 +152,6 @@ public class Fragment2 extends BaseFragment implements View.OnClickListener {
         super.onStop();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_baidumap:
-                openActivity(ActivityBaiDuMap.class);
-                break;
-            case R.id.btn_retrofit:
-                openActivity(ActivityGoTo.class);
-                break;
-            case R.id.btn_rxandroid:
-                openActivity(ActivityOpenGles.class);
-                break;
-            case R.id.btn_OpenGLES:
-                openActivity(ActivityOpenGlestwo.class);
-                break;
-            default:
-                break;
-        }
-    }
 
     // 计算方向
     private void calculateOrientation() {

@@ -5,12 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +26,11 @@ import android.widget.ViewSwitcher;
 import com.bumptech.glide.Glide;
 import com.example.administrator.MainActivity;
 import com.example.administrator.MyApplication;
+import com.example.administrator.R;
+import com.example.administrator.base.BaseFragment;
 import com.example.administrator.okHttp.OkHttpUtils;
 import com.example.administrator.okHttp.callback.StringCallback;
-import com.example.administrator.R;
+import com.example.administrator.proxy.ThreadPoolProxyFactory;
 import com.example.administrator.utils.Md5Utils;
 import com.example.administrator.utils.ToastUtils;
 import com.youth.banner.Banner;
@@ -44,18 +45,15 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -70,7 +68,7 @@ import okhttp3.Response;
  * Fragment1
  * Created by liu_tao on 16/5/23.
  */
-public class Fragment1 extends Fragment implements View.OnClickListener {
+public class Fragment1 extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "Fragment1";
     String[] imagess = new String[]{
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
@@ -79,8 +77,6 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558030884&di=b10f693abcebd09dfb309d89702672e5&imgtype=0&src=http%3A%2F%2Fpic29.nipic.com%2F20130511%2F12011435_141504339147_2.jpg",
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558204252&di=8a6ce8463360d42b7518665a469391fc&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F04%2F37%2F04658PICQHc.jpg",
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg"};
-
-    private static SimpleDateFormat sdf;
 
     private final OkHttpClient client = new OkHttpClient();
     private EditText urlEt;
@@ -100,20 +96,18 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private Handler handler;
     private TextSwitcher textSwitcher;
     private int index = 0;
-    private Disposable disposable;
     private TextView textLayout;
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_one, null);
-
-        urlEt =  view.findViewById(R.id.url_et);
+        banner = view.findViewById(R.id.banner);
+        urlEt = view.findViewById(R.id.url_et);
         urlLog = view.findViewById(R.id.log_tv);
         urlBtn = view.findViewById(R.id.url_btn);
         md5Btn = view.findViewById(R.id.md5_btn);
-        ivDelete =  view.findViewById(R.id.iv_delete);
-        time =  view.findViewById(R.id.time);
+        ivDelete = view.findViewById(R.id.iv_delete);
+        time = view.findViewById(R.id.time);
         textLayout = view.findViewById(R.id.text_layout);
         //svg图标
         VectorDrawableCompat drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_delete, null);
@@ -126,46 +120,95 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         //MyTextWatcher.setPhoneEdit(getContext(), urlEt);
         MyTextWatchers myTextWatcher = new MyTextWatchers();
         urlEt.addTextChangedListener(myTextWatcher);
-        banner = view.findViewById(R.id.banner);
-        //设置图片集合
-        banner.setImages(new ArrayList<>(Arrays.asList(imagess))).setImageLoader(new GlideImageLoader()).start();
-
-        banner.setBannerAnimation(Transformer.ScaleInOut);
+        setBanner();
         handler = new MyHandler((MainActivity) getContext());
-        textSwitcher =  view.findViewById(R.id.tv_message);
-        initTS();
+        textSwitcher = view.findViewById(R.id.tv_message);
+        initLooperTextView();
         view.findViewById(R.id.cacheTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String city =urlEt.getText().toString().trim();
-                if (TextUtils.isEmpty(city)){
-                    ToastUtils.showToast("请输入要查询的城市");
-                    return;
-                }
-                try {
-                    OkHttpUtils.get()
-                            .url("http://wthrcdn.etouch.cn/weather_mini?city="+ URLEncoder.encode(city,"utf-8"))
-                            .addCacheHeader(100)//100秒
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                }
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    textLayout.setText(response);
-                                }
-                            });
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                getWeatherResult();
 
             }
         });
+        ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(LoopperTextView);
         return view;
     }
 
-    private void initTS() {
+    public void getWeatherResult() {
+        String city = urlEt.getText().toString().trim();
+        if (TextUtils.isEmpty(city)) {
+            ToastUtils.showToast("请输入要查询的城市");
+            return;
+        }
+        try {
+            OkHttpUtils.get()
+                    .url("http://wthrcdn.etouch.cn/weather_mini?city=" + URLEncoder.encode(city, "utf-8"))
+                    .addCacheHeader(100)//100秒
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                        }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            textLayout.setText(response);
+                        }
+                    });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+
+    private void setBanner() {
+        List<Integer> mList = new ArrayList(Arrays.asList(imagess));
+
+        banner.setOffscreenPageLimit(3);
+        banner.setImages(new ArrayList<>(mList))
+                .setImageLoader(new GlideImageLoader()).start();
+        banner.setBannerAnimation(Transformer.ScaleInOut);
+    }
+
+    public class GlideImageLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            //Glide 加载图片简单用法
+            Glide.with(context).load(path).centerCrop().into(imageView);
+        }
+
+    }
+    // rxjava 实现  内存泄露？？
+    private Runnable LoopperTextView = new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textSwitcher.setText(textStr[index]);
+                        index++;
+                        if (index == textStr.length) {
+                            index = 0;
+                        }
+                        Log.e(TAG,textStr[index]);
+                    }
+                });
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    };
+    private void initLooperTextView() {
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -181,51 +224,28 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 return textView;
             }
         });
-        new Thread() {
-            @Override
-            public void run() {
-                while (index < textStr.length) {
-                    synchronized (this) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textSwitcher.setText(textStr[index]);
-                            }
-                        });
-                        index++;
-                        if (index == textStr.length) {
-                            index = 0;
-                        }
-                        SystemClock.sleep(3000);//每隔3秒滚动一次
-                    }
-                }
-            }
-        }.start();
+
         textSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (index % textStr.length) {
+                switch (index) {
                     case 0:
                         ToastUtils.showToast(textStr[0]);
-
                         break;
                     case 1:
                         ToastUtils.showToast(textStr[1]);
-
                         break;
                     case 2:
                         ToastUtils.showToast(textStr[2]);
-
                         break;
                     case 3:
                         ToastUtils.showToast(textStr[3]);
-
                         break;
                     case 4:
                         ToastUtils.showToast(textStr[4]);
-
                         break;
                     default:
+                        ToastUtils.showToast("期待");
                         break;
                 }
             }
@@ -240,6 +260,11 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         banner.isAutoPlay(true);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        ThreadPoolProxyFactory.getNormalThreadPoolProxy().remove(LoopperTextView);
+    }
 
     @Override
     public void onClick(View v) {
@@ -266,7 +291,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 break;
             case R.id.md5_btn:
                 String s1 = urlEt.getText().toString().trim();
-                if (TextUtils.isEmpty(s1)){
+                if (TextUtils.isEmpty(s1)) {
                     return;
                 }
                 String md5pwd = Md5Utils.encryptpwd(s1);
@@ -280,21 +305,9 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*将字符串转为时间戳*/
-    public static long getStringToDate(String time) {
-        sdf = new SimpleDateFormat("yyyy年MM月dd日");
-        Date date = new Date();
-        try {
-            date = sdf.parse(String.valueOf(time));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date.getTime();
-    }
+
 
     public void loginUUrl(String url) {
-
-
         try {
             Request requst = new Request.Builder()
                     .url(url)
@@ -335,13 +348,14 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         }
     }
 
+
     public void RXjavaTest() {
         //                //执行一些其他操作
 //                String s = OKHttpNet.OkHttpNetGet(url);
 //                if (s.isEmpty()) return;
 //                e.onNext(s);
 // .sample(2, TimeUnit.SECONDS)  //sample取样
-        disposable = Observable.create(new ObservableOnSubscribe<Integer>() {
+         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> e) throws Exception {
 //                //执行一些其他操作
@@ -355,7 +369,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
             }
         }).subscribeOn(Schedulers.io())
-
+                //过滤器
                 .filter(new Predicate<Integer>() {
                     @Override
                     public boolean test(@NonNull Integer i) throws Exception {
@@ -402,37 +416,6 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     }
 
 
-    public class GlideImageLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            /**
-             注意：
-             1.图片加载器由自己选择，这里不限制，只是提供几种使用方法
-             2.返回的图片路径为Object类型，由于不能确定你到底使用的那种图片加载器，
-             传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
-             切记不要胡乱强转！
-             */
-
-            //Glide 加载图片简单用法
-            Glide.with(context).load(path).into(imageView);
-//
-//            //Picasso 加载图片简单用法
-//            Picasso.with(context).load("").into(imageView);
-//
-//            //用fresco加载图片简单用法，记得要写下面的createImageView方法
-//            Uri uri = Uri.parse((String) path);
-//            imageView.setImageURI(uri);
-        }
-
-   /*     //提供createImageView 方法，如果不用可以不重写这个方法，主要是方便自定义ImageView的创建
-        @Override
-        public ImageView createImageView(Context context) {
-            //使用fresco，需要创建它提供的ImageView，当然你也可以用自己自定义的具有图片加载功能的ImageView
-            SimpleDraweeView simpleDraweeView = new SimpleDraweeView(context);
-            return simpleDraweeView;
-        }*/
-    }
-
     private class MyHandler extends Handler {
         //弱引用防止内存泄漏
         WeakReference<MainActivity> mActivity;
@@ -473,6 +456,9 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
 

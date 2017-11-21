@@ -43,7 +43,8 @@ public class ActivityOne extends BaseActivity {
                 return view;
             }
         });
-        lv_menu.setAdapter(new ArrayAdapter<String>(ActivityOne.this, R.layout.item_tv,Chinese.sCheeseStrings));
+         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(ActivityOne.this, R.layout.item_tv,Chinese.sCheeseStrings);
+        lv_menu.setAdapter(arrayAdapter);
         iv_header = (ImageView) findViewById(R.id.iv_header);
         iv_header.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +85,6 @@ public class ActivityOne extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        onDestroy();
         super.onBackPressed();
     }
 }

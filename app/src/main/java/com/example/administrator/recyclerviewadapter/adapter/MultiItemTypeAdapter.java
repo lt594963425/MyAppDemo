@@ -125,4 +125,11 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
+    public void addDataAll(List data) {
+        mDatas.addAll(data);
+    }
+
+    public void clearData() {
+        mDatas.clear();
+    }
 }

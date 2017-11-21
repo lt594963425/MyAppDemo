@@ -65,7 +65,9 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.go:
-                if (TextUtils.isEmpty(mAddress)) return;
+                if (TextUtils.isEmpty(mAddress)) {
+                    return;
+                }
                 showGoDialog();
                 break;
             case R.id.go_baidu:

@@ -2,7 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
@@ -29,7 +30,8 @@
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
             app:cardCornerRadius="10dp"
-            app:contentPadding="10dp">
+            app:contentPadding="10dp"
+            tools:targetApi="lollipop">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -63,7 +65,10 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
-
+       <ImageView
+           android:id="@+id/image_drable"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/btn1"
             style="@style/AlertDialog.AppCompat"
