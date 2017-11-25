@@ -3,9 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.example.administrator.ui.fragment2.View.XuanZhuanView
+    <EditText
+        android:id="@+id/verry_name"
+        android:hint="用户名"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/verry_pws"
+        android:hint="密码"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/verry_login"
+        android:text="登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.example.administrator.ui.fragment2.View.XuanZhuanView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

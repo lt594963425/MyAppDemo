@@ -49,19 +49,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -150,6 +148,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                         }
+
                         @Override
                         public void onResponse(String response, int id) {
                             textLayout.setText(response);
@@ -183,6 +182,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         }
 
     }
+
     // rxjava 实现  内存泄露？？
     private Runnable LoopperTextView = new Runnable() {
         @Override
@@ -196,7 +196,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                         if (index == textStr.length) {
                             index = 0;
                         }
-                        Log.e(TAG,textStr[index]);
+                        Log.e(TAG, textStr[index]);
                     }
                 });
                 try {
@@ -208,6 +208,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
         }
     };
+
     private void initLooperTextView() {
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -306,7 +307,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     }
 
 
-
     public void loginUUrl(String url) {
         try {
             Request requst = new Request.Builder()
@@ -350,12 +350,39 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
 
     public void RXjavaTest() {
-        //                //执行一些其他操作
-//                String s = OKHttpNet.OkHttpNetGet(url);
-//                if (s.isEmpty()) return;
-//                e.onNext(s);
-// .sample(2, TimeUnit.SECONDS)  //sample取样
-         Observable.create(new ObservableOnSubscribe<Integer>() {
+        Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                try {
+                    for (int i = 0; i < 1000; i++) {
+                        subscriber.onNext(i);
+                        Thread.sleep(2000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
+                .filter(new Func1<Integer, Boolean>() {
+                    @Override
+                    public Boolean call(Integer integer) {
+                        return integer%2 == 0;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        ToastUtils.showToast(integer + "");
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
+                });
+
+   /*      Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> e) throws Exception {
 //                //执行一些其他操作
@@ -382,7 +409,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                     public void accept(@NonNull Integer s) throws Exception {
                         ToastUtils.showToast(s + "");
                     }
-                });
+                });*/
     }
 
     /**

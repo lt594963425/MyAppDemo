@@ -78,7 +78,7 @@
             android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:text="旋转翻转"
+            android:text="旋转翻转+rxbinding"
             android:textAllCaps="false"/>
 
         <Button

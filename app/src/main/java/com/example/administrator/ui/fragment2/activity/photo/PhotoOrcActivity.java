@@ -1,10 +1,13 @@
 package com.example.administrator.ui.fragment2.activity.photo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -23,16 +26,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static com.example.administrator.ui.fragment2.activity.ActivityOpenGles.REQUEST_CAMERA_PERMISSIONS_CODE;
+
 public class PhotoOrcActivity extends AppCompatActivity {
 
 
         private SurfaceView surfaceview;
         private Camera camera;
         private Button take;
-
-
-
-
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -59,15 +60,22 @@ public class PhotoOrcActivity extends AppCompatActivity {
             take.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    requestCameraPermission();
 
-                    takepicture();
 
                 }
             });
 
 
         }
-
+    public void requestCameraPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                this.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            this.requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSIONS_CODE);
+        } else {
+            takepicture();
+        }
+    }
 
     //点击事件
     @Override
