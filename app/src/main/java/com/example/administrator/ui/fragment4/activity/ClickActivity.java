@@ -25,7 +25,7 @@ public class ClickActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_click);
-
+        setTitle("C");
         animation_view_click=(LottieAnimationView)findViewById(R.id.animation_view_click);
         tv_seek=(TextView)findViewById(R.id.tv_seek);
 

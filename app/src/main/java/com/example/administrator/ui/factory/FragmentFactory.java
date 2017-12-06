@@ -1,6 +1,7 @@
 package com.example.administrator.ui.factory;
 
 import android.util.Pair;
+import android.util.SparseArray;
 
 import com.example.administrator.base.BaseFragment;
 import com.example.administrator.ui.Fragment1;
@@ -10,9 +11,7 @@ import com.example.administrator.ui.Fragment4;
 import com.example.administrator.ui.Fragmenta;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * $name
@@ -29,8 +28,9 @@ public class FragmentFactory {
     public static final int TAB_TOP = 2;
 
     public static final int TAB_APPMANAGER = 3;
-    private List<Pair<String, Fragmenta>> fragments =new ArrayList<Pair<String, Fragmenta>>();;
-    private static Map<Integer, BaseFragment> mFragmentMap = new HashMap<>();
+    private List<Pair<String, Fragmenta>> fragments =new ArrayList<Pair<String, Fragmenta>>();
+    //存在内存泄露
+    private static SparseArray< BaseFragment> mFragmentMap = new SparseArray<>();
 
     /**
      * 统一通过一个方法创建Fragment，避免重复创建
@@ -58,7 +58,6 @@ public class FragmentFactory {
                 default:
                     break;
             }
-            // 把创建的Fragment 存起来
             mFragmentMap.put(index, fragment);
         }
         return fragment;

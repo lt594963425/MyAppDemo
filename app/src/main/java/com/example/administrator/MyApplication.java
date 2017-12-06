@@ -3,24 +3,22 @@ package com.example.administrator;
 import android.app.Application;
 import android.os.Process;
 
-import com.example.administrator.okHttp.OkHttpUtils;
-import com.example.administrator.okHttp.cookie.CookieJarImpl;
-import com.example.administrator.okHttp.cookie.store.SPCookieStore;
-import com.example.administrator.okHttp.https.HttpsUtils;
-import com.example.administrator.okHttp.log.LoggerInterceptor;
+import com.example.administrator.persistentcookiejar.ClearableCookieJar;
+import com.example.administrator.persistentcookiejar.PersistentCookieJar;
+import com.example.administrator.persistentcookiejar.cache.SetCookieCache;
+import com.example.administrator.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.example.administrator.proxy.ThreadPoolProxyFactory;
 import com.example.administrator.utils.ACache;
-import com.example.administrator.utils.FileUtils;
 import com.example.administrator.utils.LogUtils;
 import com.squareup.leakcanary.LeakCanary;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.https.HttpsUtils;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
 /**
@@ -34,22 +32,26 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
+        //cookie 存储
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .addInterceptor(new LoggerInterceptor("TAG"))
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                .addInterceptor(new LoggerInterceptor("TAG"))
-                .cookieJar(new CookieJarImpl(new SPCookieStore(this)))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
                         return true;
                     }
                 })
-               .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) //https
-                //     .cache(new Cache(context.getCacheDir(),10*1024*1024))  //安全的缓存，程序内部
-                .cache(new Cache(new File(FileUtils.getCachePath(this), "okhttpCache"), 10 * 1024 * 1024))
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager) //https
+                //其他配置
                 .build();
+
         OkHttpUtils.initClient(okHttpClient);
         ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(initThirdService);
 
@@ -59,7 +61,6 @@ public class MyApplication extends Application {
         @Override
         public void run() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-            mCache = ACache.get(getApplicationContext());
             initLog();//log的初始化
         /*
          * 内存泄漏检测
@@ -75,12 +76,6 @@ public class MyApplication extends Application {
         return context;
     }
 
-    /**
-     * 获得缓存类
-     */
-    public static ACache getAcache() {
-        return mCache;
-    }
 
     public void initLog() {
         LogUtils.Config config = LogUtils.getConfig()
@@ -99,4 +94,6 @@ public class MyApplication extends Application {
                 .setStackDeep(1);// log栈深度，默认为1
         LogUtils.d(config.toString());
     }
+
+
 }

@@ -32,6 +32,7 @@ public class ActivityOpenGles extends BaseActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_gles);
+        setTitle(" OpenGles");
         surfaceView = findView(R.id.textureView1);
         cameraContainerLayout = (FrameLayout) findViewById(R.id.camera_container_layout);
         requestCameraPermission();

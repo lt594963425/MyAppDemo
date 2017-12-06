@@ -66,13 +66,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recylerview_add);
         mPullToRefreshView = findViewById(R.id.pullRefreshLayout);
         mList = new ArrayList<>(Arrays.asList(imagess));
-
+        setTitle("RecyclerView");
         initDatas();
         mRecyclerView = findViewById(R.id.recyclerView_add);
-//        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //   mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        //      mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        //   mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));  //网格布局
+        //   mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));//瀑布流布局
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mAdapter = new CommonAdapter<String>(this, R.layout.item_expand_recylerview, mDatas) {
@@ -98,21 +97,23 @@ public class RecyclerViewActivity extends AppCompatActivity {
             }
         });
     }
+
     //下拉刷新， 上拉加载更多
     private void pullRefresh() {
         mPullToRefreshView.setPullDownEnable(true);
         mPullToRefreshView.setListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e(TAG,"onRefresh");
+                Log.e(TAG, "onRefresh");
             }
 
             @Override
             public void onLoadMore() {
-                Log.e(TAG,"onLoadMore");
+                Log.e(TAG, "onLoadMore");
             }
         });
     }
+
     //加载更多
     private void loadMoreData() {
         mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
@@ -140,6 +141,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mEmptyWrapper = new EmptyWrapper(mAdapter);
         mEmptyWrapper.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, mRecyclerView, false));
     }
+
     //加载头布局 和脚布局
     private void initHeaderAndFooter() {
         mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);

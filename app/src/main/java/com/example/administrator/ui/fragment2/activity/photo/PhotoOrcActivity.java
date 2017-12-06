@@ -248,7 +248,7 @@ public class PhotoOrcActivity extends AppCompatActivity {
                     fos4.write(data);
                     fos4.close();
 
-                    Intent intent = new Intent(PhotoOrcActivity.this,ResultActivit.class);
+                    Intent intent = new Intent(PhotoOrcActivity.this,ResultActivity.class);
                     startActivity(intent);
 
 

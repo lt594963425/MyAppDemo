@@ -1,5 +1,7 @@
 package com.example.administrator.proxy;
 
+import com.example.administrator.utils.LogUtils;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -54,6 +56,7 @@ public class ThreadPoolProxy {
      * 提交任务
      */
     public Future submit(Runnable task) {
+        LogUtils.e("submit.task");
         initThreadPoolExecutor();
         Future<?> future = mExecutor.submit(task);
         return future;
@@ -63,6 +66,7 @@ public class ThreadPoolProxy {
      * 执行任务
      */
     public void execute(Runnable task) {
+        LogUtils.e("execute.task");
         initThreadPoolExecutor();
         mExecutor.execute(task);
     }
@@ -71,6 +75,7 @@ public class ThreadPoolProxy {
      * 移除任务
      */
     public void remove(Runnable task) {
+        LogUtils.e("remove.task");
         initThreadPoolExecutor();
         mExecutor.remove(task);
     }

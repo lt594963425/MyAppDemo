@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="true"
     android:orientation="vertical">
     <!-- 使用TextInputLayout包裹EditText -->
     <include layout="@layout/toolbar"/>
@@ -31,6 +29,7 @@
 
         app:passwordToggleEnabled="true">
     <EditText
+        android:id="@+id/edit_pwd"
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -49,4 +48,10 @@
             android:hint="密码"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btn_login_tpl"
+        android:text="登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

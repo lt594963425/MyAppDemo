@@ -20,7 +20,11 @@
             android:layout_marginTop="70dp"
             android:text="Hello RxJava!"
             android:textSize="40sp"/>
-
+        <Button
+            android:id="@+id/rx_java_btn"
+            android:textAllCaps="false"
+            android:text="RXJava"
+            style="@style/ButtonStyle" />
         <Button
             android:id="@+id/btn_baidumap"
             android:layout_width="match_parent"
@@ -128,6 +132,7 @@
             android:padding="2dp"
             android:text="dailogFragment"
             android:textAllCaps="false"/>
+
     </LinearLayout>
 
 </ScrollView>

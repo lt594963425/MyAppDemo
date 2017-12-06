@@ -7,4 +7,23 @@
     <dimen name="default_spacing_small">4dp</dimen>
     <dimen name="default_spacing_medium">8dp</dimen>
     <dimen name="default_spacing_huge">128dp</dimen>
+    <dimen name="default_spacing_hugess" >48.0dip</dimen>
+    <dimen name="default_spacing_mediumss">21.0sp</dimen>
+
+
+    <dimen name="toolbar_height">45.0dp</dimen>
+
+    <dimen name="middle_size_btn">16.0sp</dimen>
+    <dimen name="little_size_btn">16.0sp</dimen>
+    <dimen name="large_size_btn">16.0sp</dimen>
+    <dimen name="padding_btn">1dp</dimen>
+
+    <dimen name="large_size_marge">5dp</dimen>
+
+
+    <dimen name="middle_height_txt">50dp</dimen>
+    <dimen name="padding_txt">5dip</dimen>
+    <dimen name="text_size_txt">20dip</dimen>
+
+
 </resources>

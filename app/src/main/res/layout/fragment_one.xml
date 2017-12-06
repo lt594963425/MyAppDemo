@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:lt="http://schemas.android.com/tools">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:focusable="true"
         android:orientation="vertical">
 
         <FrameLayout
@@ -81,22 +81,31 @@
                 android:text="MD5"/>
 
             <TextClock
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="1dp"
                 android:background="@drawable/bg_white_line"
                 android:elevation="1dp"
                 android:format24Hour=" yyyy年MM月dd \n aa HH:mm:ss EE"
                 android:gravity="center"/>
+
+            <Button
+                android:id="@+id/notify"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_white_line"
+                android:elevation="1dp"
+                android:text="通知栏"/>
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ScrollView
                 android:id="@+id/sv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/log_tv"
@@ -146,14 +155,20 @@
         <TextView
             android:id="@+id/text_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"/>
 
         <com.example.administrator.view.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="哈哈哈"
+            android:text="自定义view ,属性：哈哈哈"
             app:testAttr="520"
             app:text="你好啊"/>
+
+        <EditText
+            android:id="@+id/test_f1_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 </ScrollView>

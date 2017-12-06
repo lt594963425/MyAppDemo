@@ -81,6 +81,7 @@ public class ActivityBaiDuMap extends BaseActivity implements View.OnClickListen
         initLocation();
     }
     private void init() {
+        setTitle("百度地图");
         mBaiduMap = mMapView.getMap();
         //设定初始化地图时的比例,当前为500米
         MapStatusUpdate msu= MapStatusUpdateFactory.zoomTo(15.0f);

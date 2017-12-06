@@ -1,19 +1,34 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light" >
-       <!-- <item name="android:windowBackground">@drawable/logo</item>-->
-    </style>
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <!--标题颜色 -->
-        <item name="colorPrimary">@color/white</item>
-        <!--状态栏颜色-->
+        <item name="colorPrimary">@color/colorcircleblue</item>
         <item name="colorPrimaryDark">@color/colorcircleblue</item>
-        <item name="android:listDivider">@drawable/divider_bg</item>
-        <!--Window color-->
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:actionMenuTextAppearance">@style/CActionMenuTextAppearance</item>
+        <item name="colorAccent">@color/colorGreen</item>
+    </style>
+    <style name="BaseTheme" parent="AppTheme"/>
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="windowActionBar">false</item>-->
+    <!--<item name="windowNoTitle">true</item>-->
+    <!--</style>-->
+    <!--toolbar的样式-->
+    <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textSize">18sp</item>
+        <!--修改toolbar的Title(大标题)颜色-->
+        <item name="android:textColorPrimary">@color/colorOrange</item>
+        <!--修改toolbar的subtitle(小标题)颜色-->
+        <item name="subtitleTextColor">@color/colorOrange</item>
+        <!--修改toolbar的图标颜色.-->
+        <item name="colorControlNormal">@color/colorOrange</item>
+    </style>
+    <!--toolbar popup_theme的样式-->
+    <style name="popup_theme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <!--设置背景-->
+        <item name="android:background">@android:color/white</item>
+        <!--设置字体颜色-->
+        <item name="android:textColor">@color/colorOrange</item>
+        <!--设置不覆盖锚点-->
+        <item name="overlapAnchor">false</item>
     </style>
     <style name="CActionMenuTextAppearance" parent="@android:style/TextAppearance.Holo.Small">
         <item name="android:textSize">@dimen/abc_text_size_subtitle_material_toolbar</item>
@@ -22,6 +37,18 @@
             @android:style/TextAppearance.Holo.Widget.ActionBar.Menu
         </item>
     </style>
+
+    <style name="ActionBarStyle.Default" parent="@android:style/Widget.ActionBar">
+        <item name="android:background">@color/colorAccentss</item>
+        <item name="android:height">@dimen/default_spacing_hugess</item>
+        <item name="android:displayOptions">showCustom</item>
+        <item name="android:titleTextStyle">@style/ActionBarStyle</item>
+    </style>
+    <style name="ActionBarStyle">
+        <item name="android:textSize">@dimen/default_spacing_mediumss</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
     <style name="TransDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -89,24 +116,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
     </style>
 
-    <!--toolbar的样式-->
-    <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:textSize">18sp</item>
-        <!--修改toolbar的Title(大标题)颜色-->
-        <item name="android:textColorPrimary">@color/colorOrange</item>
-        <!--修改toolbar的subtitle(小标题)颜色-->
-        <item name="subtitleTextColor">@color/colorOrange</item>
-        <!--修改toolbar的图标颜色.-->
-        <item name="colorControlNormal">@color/colorOrange</item>
-    </style>
-    <style name="popup_theme" parent="@style/ThemeOverlay.AppCompat.Light">
-        <!--设置背景-->
-        <item name="android:background">@android:color/white</item>
-        <!--设置字体颜色-->
-        <item name="android:textColor">@color/colorOrange</item>
-        <!--设置不覆盖锚点-->
-        <item name="overlapAnchor">false</item>
-    </style>
+
     <!--MaterialSearchView-->
     <style name="MSV_ImageButton">
         <item name="android:layout_width">wrap_content</item>
@@ -115,4 +125,7 @@
         <item name="android:paddingLeft">@dimen/search_icon_padding</item>
         <item name="android:paddingRight">@dimen/search_icon_padding</item>
     </style>
+
+
+
 </resources>

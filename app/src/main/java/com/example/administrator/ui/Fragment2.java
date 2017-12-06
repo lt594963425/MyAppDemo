@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.R;
+import com.example.administrator.RXJavaActivity;
 import com.example.administrator.base.BaseFragment;
 import com.example.administrator.ui.fragment2.activity.ActivityBaiDuMap;
 import com.example.administrator.ui.fragment2.activity.ActivityGoTo;
@@ -24,6 +26,14 @@ import com.example.administrator.ui.fragment2.activity.RecyclerViewActivity;
 import com.example.administrator.ui.fragment2.activity.TestORCActivity;
 import com.example.administrator.ui.fragment2.activity.XuanZhuanActivity;
 import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
+import com.jakewharton.rxbinding.view.RxView;
+
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import rx.functions.Action1;
 
 
 /**
@@ -33,6 +43,9 @@ import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
 public class Fragment2 extends BaseFragment {
 
     private static final String TAG = "---Fragment2";
+    @BindView(R.id.rx_java_btn)
+    Button mRxJavaBtn;
+    Unbinder unbinder;
     private SensorManager mSensorManager;
     private Sensor accelerometer; // 加速度传感器
     private Sensor magnetic; // 地磁场传感器
@@ -42,10 +55,17 @@ public class Fragment2 extends BaseFragment {
     private View view;
 
 
-
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_two, null);
+        ButterKnife.bind(this, view);
+        RxView.clicks(mRxJavaBtn).throttleFirst(1, TimeUnit.SECONDS)
+        .subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                openActivity(RXJavaActivity.class);
+            }
+        });
         view.findViewById(R.id.btn_baidumap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +206,20 @@ public class Fragment2 extends BaseFragment {
             // Log.i(TAG, "西北");
             azimuthAngle.setText("↑西北");
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     class MySensorEventListener implements SensorEventListener {

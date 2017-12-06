@@ -40,6 +40,7 @@ public class XuanZhuanActivity extends BaseActivity {
         setContentView(R.layout.activity_xuan_zhuan);
         ButterKnife.bind(this);
         bindViewByRxBinding();
+        setTitle("登录");
     }
 
     @OnClick(R.id.verry_login)

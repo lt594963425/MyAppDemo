@@ -3,9 +3,8 @@ package com.example.administrator.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
 import android.view.ViewGroup;
-
-import java.util.List;
 
 /**
  * $name
@@ -18,13 +17,13 @@ public class FixPagerAdapter  extends FragmentStatePagerAdapter {
 
 
     private String[] mTitles;
-    List<Fragment> mFragments=null;
+    SparseArray<Fragment> mFragments=null;
 
     public void setTitles(String[] titles) {
         this.mTitles = titles;
     }
 
-    public void setFragments(List<Fragment> fragments) {
+    public void setFragments(SparseArray<Fragment> fragments) {
         mFragments = fragments;
     }
 

@@ -22,6 +22,7 @@ public class LoadImageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load);
+        setTitle("LoadImage");
         ImageView showImage =  findViewById(R.id.image_loader);
         ViewCompat.setTransitionName(showImage, "load_image");
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {

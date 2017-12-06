@@ -11,29 +11,51 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.R;
 import com.example.administrator.base.BaseFragment;
+import com.example.administrator.utils.ImageLoader;
 import com.example.administrator.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 
 /**
  * Fragment3
  * Created by liu_tao on 16/5/23.
  */
-public class Fragment3 extends BaseFragment{
+public class Fragment3 extends BaseFragment {
+    @BindView(R.id.image_logo)
+    ImageView mImageSwitcher;
+    Unbinder unbinder;
     //String url = "http://www.huhst.edu.cn:8001/";
     private TabLayout mTabLayout;
     public ViewPager mViewPager;
     private Toolbar toolbar;
     private List<Pair<String, Fragmenta>> items;
+    String[] mImages = new String[]{
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
+            "http://pic29.photophoto.cn/20131125/0022005500418920_b.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558030884&di=b10f693abcebd09dfb309d89702672e5&imgtype=0&src=http%3A%2F%2Fpic29.nipic.com%2F20130511%2F12011435_141504339147_2.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558204252&di=8a6ce8463360d42b7518665a469391fc&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F04%2F37%2F04658PICQHc.jpg",
+            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg"};
+    int index = 0;
+    private ImageLoader mImageLoader;
+
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, null);
+        ButterKnife.bind(this, view);
         mTabLayout = (TabLayout) view.findViewById(R.id.tab);
         mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -43,8 +65,33 @@ public class Fragment3 extends BaseFragment{
                 ToastUtils.showToast("我是悬浮按钮");
             }
         });
-        initToolBar(toolbar,false,"");
+        initToolBar(toolbar, false, "");
+
         return view;
+    }
+
+
+
+    public void timerOperable() {
+        io.reactivex.Observable.interval(1, 2, TimeUnit.SECONDS)
+                .map(new Function<Long, Long>() {
+                    @Override
+                    public Long apply(Long aLong) throws Exception {
+                        return aLong % (long) mImages.length;
+                    }
+                })
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long l) throws Exception {
+                        index = (int) (long) l;
+                        if (mImageSwitcher != null) {
+                            Glide.with(getActivity()).load(mImages[index]).into(mImageSwitcher);
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -64,9 +111,23 @@ public class Fragment3 extends BaseFragment{
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-              mViewPager.setCurrentItem(position);
+                mViewPager.setCurrentItem(position);
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private class MainAdapter extends FragmentPagerAdapter {
@@ -91,7 +152,9 @@ public class Fragment3 extends BaseFragment{
         }
     }
 
-    /** 初始化 Toolbar */
+    /**
+     * 初始化 Toolbar
+     */
     public void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
         toolbar.setTitle(title);
     }

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.IOException;
 
@@ -30,6 +32,7 @@ import okhttp3.ResponseBody;
 public class OKHttpActivity extends BaseActivity implements View.OnClickListener {
     public static final String URL_GET = "http://apis.juhe.cn/mobile/get?phone=13812345678&key=daf8fa858c330b22e342c882bcbac622";
     public static final String URL_POST = "http://apis.juhe.cn/mobile/get ";
+    public static final String URL_POSTs = "http://192.168.6.46/improve/version_manager/version_update ";
 
     private Button btnGet;
     private Button btnPost;
@@ -77,22 +80,24 @@ private EditText etInput;
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_get:
-               Log.e(TAG,"___________");
-                Request get_request = new Request.Builder()
-                        .url("http://127.0.0.1/data.json")
-                        .build();
-                // client.newCall(get_request).execute()
-                client.newCall(get_request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                    }
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String string = response.body().string();
-                        Log.e(TAG,string);
-                    }
-                });
+                //getokhttp();
+                OkHttpUtils
+                        .post()
+                        .url(URL_POSTs)
+                        .addParams("version_code", "3")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
 
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                               Log.e(TAG,response);
+                               tvError.setText(response);
+                            }
+                        });
                 break;
             case R.id.btn_post:
                 String phone = etInput.getText().toString().trim();
@@ -100,9 +105,12 @@ private EditText etInput;
                         .add("phone", phone)// 构造请求的参数
                         .add("key", "daf8fa858c330b22e342c882bcbac622")// 构造请求的参数
                         .build();
+                RequestBody body2 = new FormBody.Builder()
+                        .add("version_code", "3")// 构造请求的参数
+                        .build();
                 Request post_request = new Request.Builder()
-                        .url(URL_POST)// 指定请求的地址
-                        .post(body)// 指定请求的方式为POST
+                        .url(URL_POSTs)// 指定请求的地址
+                        .post(body2)// 指定请求的方式为POST
                         .build();
                 client.newCall(post_request).enqueue(new Callback() {
                     @Override
@@ -115,7 +123,8 @@ private EditText etInput;
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        ResponseBody body = response.body();
+
+                        ResponseBody body = (ResponseBody)response.body();
                         String string = body.string();// 把返回的结果转换为String类型
                         Message msg = new Message();
                         msg.what = 1;
@@ -128,6 +137,25 @@ private EditText etInput;
                 break;
         }
     }
+
+    private void getokhttp() {
+        Log.e(TAG,"___________");
+        Request get_request = new Request.Builder()
+                .url("http://127.0.0.1/data.json")
+                .build();
+        // client.newCall(get_request).execute()
+        client.newCall(get_request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                Log.e(TAG,string);
+            }
+        });
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -29,9 +29,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.example.administrator.okHttp.log.LoggerInterceptor.TAG;
 
 public class PhotoUtil {
+    private static final String TAG = "PhotoUtil";
+
     /**
      * 将图片变为圆角
      *

@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.util.LruCache;
 
-import com.example.administrator.okHttp.OkHttpUtils;
-import com.example.administrator.okHttp.callback.BitmapCallback;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -80,7 +80,6 @@ public class ImageLoader {
                 LogUtils.e(TAG,"从网络中下载数据");
                 OkHttpUtils.get()
                         .url(url)
-                        .addCacheHeader(60)
                         .build()
                         .execute(new BitmapCallback() {
                             @Override

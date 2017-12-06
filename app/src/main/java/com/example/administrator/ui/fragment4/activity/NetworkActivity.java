@@ -1,5 +1,6 @@
 package com.example.administrator.ui.fragment4.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -31,7 +32,7 @@ public class NetworkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network);
-
+        setTitle("N");
         animation_view_network=(LottieAnimationView)findViewById(R.id.animation_view_network);
         loadUrl("http://192.168.6.46/data.json");
     }
@@ -56,6 +57,7 @@ public class NetworkActivity extends AppCompatActivity {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {

@@ -17,7 +17,7 @@ import com.example.administrator.design.decorator.DecortorTestActivity;
 import com.example.administrator.design.factory.FactorySendActivity;
 import com.example.administrator.greendao.ActivityGreenDao;
 import com.example.administrator.loginMvp.ui.LoginActivity;
-import com.example.administrator.retrofit.ActivityRetrofit;
+import com.example.administrator.net.ActivityRetrofit;
 import com.example.administrator.ui.fragment4.activity.ActivityImageLoader;
 import com.example.administrator.ui.fragment4.activity.ActivityListViewRefresh;
 import com.example.administrator.ui.fragment4.activity.ActivityOne;
@@ -47,8 +47,6 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         CircleImageView circleimage =  view.findViewById(R.id.profile_image);
         ImageView proFileImage = view.findViewById(R.id.circle_image);
 
-
-
         view.findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +55,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(0, 0);
             }
         });
+
         //加载网络图片
         String path1 = "http://img3.imgtn.bdimg.com/it/u=3242709860,2221903223&fm=214&gp=0.jpg";
         String path = "http://p3.so.qhmsg.com/bdr/326__/t018da60b972e086a1d.jpg";
@@ -66,7 +65,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 .error(R.drawable.hed)
                 .crossFade()
                 .into(circleimage);
-        circleimage.setImageURI(Uri.parse(path1));
+        circleimage.setImageURI(Uri.parse(path));
 
         Glide.with(getContext())
                 .load(path1)
@@ -114,6 +113,8 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         });
         return view;
     }
+
+
 
     @Override
     public void setTitle(String title) {

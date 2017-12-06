@@ -8,10 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.administrator.okHttp.OkHttpUtils;
-import com.example.administrator.okHttp.callback.StringCallback;
 import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
 
@@ -37,6 +37,7 @@ public class TestPostactivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_post);
+        setTitle("post请求");
         init();
     }
 

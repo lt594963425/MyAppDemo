@@ -1,73 +1,66 @@
 package com.example.administrator;
 
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.example.administrator.base.BaseActivity;
+import com.example.administrator.ui.Fragment1;
+import com.example.administrator.ui.Fragment2;
+import com.example.administrator.ui.Fragment3;
+import com.example.administrator.ui.Fragment4;
 import com.example.administrator.ui.adapter.FixPagerAdapter;
-import com.example.administrator.ui.factory.FragmentFactory;
 import com.example.administrator.utils.ToastUtils;
 import com.example.administrator.view.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
  * @author LiuTao
  */
 public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener, Toolbar.OnMenuItemClickListener {
-    //private Realm realm;
-    private FragmentTabHost mTabHost;
-    private static int tabImages[] = {
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
+    @BindView(android.R.id.tabhost)
+    FragmentTabHost mTabHost;
+    @BindView(R.id.search_view)
+    MaterialSearchView mSearchView;
+    private static int[] mTabImageViews = {
             R.drawable.tab_view_btn,
             R.drawable.tab_view_btn,
             R.drawable.tab_view_btn,
             R.drawable.tab_view_btn};
-    private static String titles[] = {"首页", "分类", "天气", "大学"};
-    private List<Fragment> mFragments;
-    private ViewPager mViewPager;
-    private MaterialSearchView mSearchView;
+    private static String[] titles = {"首页", "分类", "天气", "大学"};
+    private SparseArray<Fragment> mFragments;
     public ArrayList<String> mDatas = null;
     private FixPagerAdapter mFixPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         initToolbar();
         initData();
         initViewPagerFargment();//初始化控件
         initSearchView();
-    }
-
-    /**
-     * 沉浸式状态栏
-     */
-    private void initState() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
     }
 
     private void initData() {
@@ -78,8 +71,6 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     }
 
     private void initViewPagerFargment() {
-        mViewPager = findViewById(R.id.pager);
-        mTabHost = findViewById(android.R.id.tabhost);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -92,16 +83,17 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         });//设置页面切换时的监听器
         mViewPager.setOffscreenPageLimit(4);
         mFixPagerAdapter = new FixPagerAdapter(getSupportFragmentManager());
-        mFragments = new ArrayList<>();
-        for (int i = 0; i < titles.length; i++) {
-            mFragments.add(FragmentFactory.createFragment(i));
-        }
+        mFragments = new SparseArray<>();
+        mFragments.put(0, new Fragment1());
+        mFragments.put(1, new Fragment2());
+        mFragments.put(2, new Fragment3());
+        mFragments.put(3, new Fragment4());
         mFixPagerAdapter.setFragments(mFragments);
         mFixPagerAdapter.setTitles(titles);
         mViewPager.setAdapter(mFixPagerAdapter);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);//绑定viewpager
         mTabHost.setOnTabChangedListener(this);
-        for (int i = 0; i < tabImages.length; i++) {
+        for (int i = 0; i < mTabImageViews.length; i++) {
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(titles[i])
                     .setIndicator(getTabItemView(i));
             mTabHost.addTab(tabSpec, mFragments.get(i).getClass(), null);
@@ -116,24 +108,23 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         View view = LayoutInflater.from(this).inflate(R.layout.tab_content, null);
         ImageView imageView = view.findViewById(R.id.tab_imageview);
         TextView mTextView = view.findViewById(R.id.tab_textview);
-        imageView.setImageResource(tabImages[i]);
+        imageView.setImageResource(mTabImageViews[i]);
         mTextView.setText(titles[i]);
         return view;
     }
 
     private void initToolbar() {
-        Toolbar mToolbar = findViewById(R.id.main_toolbar);
-        mToolbar.setTitle("有码走天下");
-        mToolbar.inflateMenu(R.menu.activity_main_toolbar);
-        mToolbar.setOnMenuItemClickListener(this);
+        getToolbar().setNavigationIcon(null);
+        getToolbar().setTitle("有码走天下");
+        getToolbar().inflateMenu(R.menu.activity_main_toolbar);
+        getToolbar().setOnMenuItemClickListener(this);
     }
 
-
     private void initSearchView() {
-        mSearchView = findViewById(R.id.search_view);
         mSearchView.setVoiceSearch(false);
-        mSearchView.setHint("搜索");
-        mSearchView.setCursorDrawable(R.drawable.bg_cameral_album);
+        mSearchView.setFocusable(true);
+        //光标的颜色
+        mSearchView.setCursorDrawable(R.drawable.color_cursor_orange);
         mSearchView.setSuggestions(mDatas.toArray(new String[mDatas.size()]));
       /*  //设置搜索结果提示
         List<ContentDTO> contentList = mRealm.where(ContentDTO.class).findAll();
@@ -141,7 +132,6 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         for (int i = 0; i < contentList.size(); i++) {
             contentNames[i] = contentList.get(i).getName();
         }*/
-        mSearchView.setEllipsize(true);
         //监听搜索结果点击事件
         mSearchView.setOnSuggestionClickListener(new MaterialSearchView.OnSuggestionClickListener() {
             @Override
@@ -152,12 +142,13 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
                     public void run() {
                         mSearchView.closeSearch();
                         ToastUtils.showToast(name);
+                        //根据搜索结果展示
                     }
 
                 }, 200);
             }
         });
-        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+   /*     mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Snackbar.make(findViewById(R.id.container), "Query: " + query, Snackbar.LENGTH_LONG)
@@ -172,7 +163,7 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
                 ToastUtils.showToast("改变了:" + newText);
                 return false;
             }
-        });
+        });*/
 
         mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -198,8 +189,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main_toolbar, menu);
-
-
+        //设置搜索框
+        MenuItem item = menu.findItem(R.id.item_search);
+        mSearchView.setMenuItem(item);
         ToastUtils.showToast("点击");
         return true;
     }
@@ -218,7 +210,6 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             default:
                 break;
         }
-
         return false;
     }
 
@@ -230,4 +221,6 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             super.onBackPressed();
         }
     }
+
+
 }

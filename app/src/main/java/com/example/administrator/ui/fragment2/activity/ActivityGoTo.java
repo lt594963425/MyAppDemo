@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_go_to);
         setBarBack();
         initView();
+        initSpanner();
     }
 
     private void initView() {
@@ -58,7 +61,14 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
         setTitle("去哪儿");
         mGo.setOnClickListener(this);
     }
-
+    private void initSpanner() {
+        Spinner spinner = findViewById(R.id.spinner1);
+        String[] mItems = getResources().getStringArray(R.array.languages);
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //绑定 Adapter到控件
+        spinner .setAdapter(adapter);
+    }
     @Override
     public void onClick(View v) {
         mAddress = mInputAddress.getText().toString().trim();

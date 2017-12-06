@@ -17,5 +17,6 @@ public class EventBusActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_bus);
+        setTitle(" EventBus");
     }
 }

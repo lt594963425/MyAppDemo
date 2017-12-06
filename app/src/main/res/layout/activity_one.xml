@@ -2,9 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dl"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="true"
-    android:background="@drawable/bg" >
+    android:background="@color/colorcircleblue" >
     <LinearLayout
         android:id="@+id/ller_menu"
         android:layout_width="match_parent"

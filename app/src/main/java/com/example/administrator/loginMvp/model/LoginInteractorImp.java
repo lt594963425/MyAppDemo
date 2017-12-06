@@ -3,8 +3,8 @@ package com.example.administrator.loginMvp.model;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.administrator.okHttp.OkHttpUtils;
-import com.example.administrator.okHttp.callback.StringCallback;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;

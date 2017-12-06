@@ -27,13 +27,25 @@ public class LoginDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name",mUsername.getText().toString());
+        outState.putString("password",mPassword.getText().toString());
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_login_dialog, null);
         mUsername = (EditText) view.findViewById(R.id.id_txt_username);
         mPassword = (EditText) view.findViewById(R.id.id_txt_password);
+        if (savedInstanceState!=null){
+            mUsername.setText(savedInstanceState.getString("name"));
+            mPassword.setText(savedInstanceState.getString("password"));
+        }
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(view)

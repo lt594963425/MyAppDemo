@@ -40,9 +40,8 @@ public class ActivityOpenGlestwo extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setTheme(android.R.style.Theme_Translucent_NoTitleBar);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_open_gles_two);
+        setTitle(" OpenGles");
         surfaceView = findView(R.id.glSurface);
         cameraLayout = (FrameLayout) findViewById(R.id.camera_layout);
 

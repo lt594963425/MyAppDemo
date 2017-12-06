@@ -417,4 +417,25 @@ public class UIUtils {
         }
         return sb.toString();
     }
+
+    //存
+    public static void saveInfoList() {
+//        List list = new ArrayList();
+//        SPUtil.("ETCCARD",new Gson().toJson(list));
+    }
+
+//    //取或查
+//    @NonNull
+//    public static List<OrderRechargeInfo> getInfoList(Context context) {
+//        List<OrderRechargeInfo> dataList = new ArrayList<>();
+//        String infoListString = PublicSPUtil.getInstance().getString("ETCCARD","");
+//        if (!TextUtils.isEmpty(infoListString)) {
+//            List<OrderRechargeInfo> temp = new Gson().fromJson(infoListString, new TypeToken<List<OrderRechargeInfo>>() {
+//            }.getType());
+//            if (temp != null) {
+//                dataList.addAll(temp);
+//            }
+//        }
+//        return dataList;
+//    }
 }

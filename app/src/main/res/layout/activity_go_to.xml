@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-    <include layout="@layout/toolbar"
-        android:id="@+id/toolbar"/>
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <include
+
+        layout="@layout/toolbar"/>
+
     <EditText
-        android:hint="输入地址"
-        android:text="长沙市芙蓉区太平街"
         android:id="@+id/input_address"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:hint="输入地址"
+        android:text="长沙市芙蓉区太平街"/>
 
     <TextView
-        android:background="@drawable/bg_recylerview_normal"
-        android:elevation="1dp"
-        android:gravity="center"
         android:id="@+id/go"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="@drawable/bg_recylerview_normal"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:gravity="center"
         android:text="去这儿"/>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:dropDownWidth="match_parent"
+        android:entries="@array/languages"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:padding="10dp"
+        android:spinnerMode="dropdown"
+
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom"/>
 </LinearLayout>

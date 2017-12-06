@@ -66,6 +66,7 @@ public class TestORCActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_orc);
+        setTitle("ORC识别");
         ButterKnife.bind(this);
         mHandler = new Handler();
         mDialog = ProgressDialogUtils.createLoadingDialog(this, "正在初始化需要的资源....");

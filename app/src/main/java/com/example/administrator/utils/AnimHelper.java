@@ -56,7 +56,9 @@ public class AnimHelper {
         int height = view.getHeight();
         ViewGroup.LayoutParams params = view.getLayoutParams();
         ViewGroup.MarginLayoutParams layoutParams = params instanceof ViewGroup.MarginLayoutParams ? ((ViewGroup.MarginLayoutParams) params) : null;
-        if (layoutParams != null) height += layoutParams.bottomMargin;
+        if (layoutParams != null) {
+            height += layoutParams.bottomMargin;
+        }
         ViewCompat.animate(view).translationY(height).setDuration(DURATION).setListener(listener).setInterpolator(INTERPOLATOR).withLayer().start();
     }
 

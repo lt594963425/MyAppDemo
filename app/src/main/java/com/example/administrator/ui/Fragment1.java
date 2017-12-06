@@ -1,14 +1,15 @@
 package com.example.administrator.ui;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.text.Editable;
+import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,47 +30,87 @@ import com.example.administrator.MainActivity;
 import com.example.administrator.MyApplication;
 import com.example.administrator.R;
 import com.example.administrator.base.BaseFragment;
-import com.example.administrator.okHttp.OkHttpUtils;
-import com.example.administrator.okHttp.callback.StringCallback;
-import com.example.administrator.proxy.ThreadPoolProxyFactory;
+import com.example.administrator.net.NetContants;
+import com.example.administrator.utils.AndroidBug5497Workaround;
+import com.example.administrator.utils.LogUtils;
 import com.example.administrator.utils.Md5Utils;
 import com.example.administrator.utils.ToastUtils;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 
 /**
  * Fragment1
  * Created by liu_tao on 16/5/23.
  */
-public class Fragment1 extends BaseFragment implements View.OnClickListener {
+public class Fragment1 extends BaseFragment {
+    @BindView(R.id.sv)
+    ScrollView mSv;
+    Unbinder unbinder;
+    @BindView(R.id.notify)
+    Button mNotify;
+    private OkHttpClient mOkHttpClient;
+    @BindView(R.id.banner)
+    Banner mBanner;
+    @BindView(R.id.url_et)
+    EditText mUrlEt;
+    @BindView(R.id.iv_delete)
+    ImageView mIvDelete;
+    @BindView(R.id.time)
+    TextView mTime;
+    @BindView(R.id.url_btn)
+    Button mUrlBtn;
+    @BindView(R.id.md5_btn)
+    Button mMd5Btn;
+    @BindView(R.id.log_tv)
+    TextView mLogTv;
+    @BindView(R.id.tv_message)
+    TextSwitcher mTvMessage;
+    @BindView(R.id.btn_rx)
+    Button mBtnRx;
+    @BindView(R.id.cacheTest)
+    Button mCacheTest;
+    @BindView(R.id.text_layout)
+    TextView mTextLayout;
     private static final String TAG = "Fragment1";
-    String[] imagess = new String[]{
+    String[] mImages = new String[]{
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
             "http://pic29.photophoto.cn/20131125/0022005500418920_b.jpg",
@@ -76,87 +118,87 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558204252&di=8a6ce8463360d42b7518665a469391fc&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F04%2F37%2F04658PICQHc.jpg",
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg"};
 
-    private final OkHttpClient client = new OkHttpClient();
-    private EditText urlEt;
-    private TextView urlLog, time;
-    private Button urlBtn, RxBtn, md5Btn;
-    private ImageView ivDelete;
     protected static final int SUCCESS = 1;
     protected static final int ERROR_CITY = 2;
     protected static final int ERROR = 3;//
     protected static final int TIMEOK = 4;
     protected static final int MD5 = 5;
-    //天气预报
-    String url = "http://wthrcdn.etouch.cn/weather_mini?city=%E6%B7%B1%E5%9C%B3";
-
-    private Banner banner;
     String[] textStr = {"双11回馈活动产品利率增长0.05%", "国家大数据发展纲要", "郑重公告", "某某网站会员须知", "网站维护公告"};
     private Handler handler;
-    private TextSwitcher textSwitcher;
     private int index = 0;
-    private TextView textLayout;
+    private Unbinder mUnbinder;
 
+    //String url = "http://wthrcdn.etouch.cn/weather_mini?city=%E6%B7%B1%E5%9C%B3";
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_one, null);
-        banner = view.findViewById(R.id.banner);
-        urlEt = view.findViewById(R.id.url_et);
-        urlLog = view.findViewById(R.id.log_tv);
-        urlBtn = view.findViewById(R.id.url_btn);
-        md5Btn = view.findViewById(R.id.md5_btn);
-        ivDelete = view.findViewById(R.id.iv_delete);
-        time = view.findViewById(R.id.time);
-        textLayout = view.findViewById(R.id.text_layout);
-        //svg图标
-        VectorDrawableCompat drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_delete, null);
-        ivDelete.setImageDrawable(drawable);
-        RxBtn = view.findViewById(R.id.btn_rx);
-        RxBtn.setOnClickListener(this);
-        urlBtn.setOnClickListener(this);
-        ivDelete.setOnClickListener(this);
-        md5Btn.setOnClickListener(this);
-        //MyTextWatcher.setPhoneEdit(getContext(), urlEt);
-        MyTextWatchers myTextWatcher = new MyTextWatchers();
-        urlEt.addTextChangedListener(myTextWatcher);
+        AndroidBug5497Workaround.assistActivity(view.findViewById(android.R.id.content));
+        mUnbinder = ButterKnife.bind(this, view);
+        mOkHttpClient = new OkHttpClient();
         setBanner();
+        timerOperable();
         handler = new MyHandler((MainActivity) getContext());
-        textSwitcher = view.findViewById(R.id.tv_message);
         initLooperTextView();
-        view.findViewById(R.id.cacheTest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWeatherResult();
+        // ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(looppertextview);
+        RxTextView.textChanges(mUrlEt)
+                .subscribe(new Action1<CharSequence>() {
+                    @Override
+                    public void call(CharSequence charSequence) {
+                        if (!mUrlEt.getText().toString().isEmpty()) {
+                            mIvDelete.setVisibility(View.VISIBLE);
+                        } else if (mUrlEt.getText().toString().length() > 0) {
+                            mIvDelete.setVisibility(View.VISIBLE);
+                        } else {
+                            mIvDelete.setVisibility(View.INVISIBLE);
 
-            }
-        });
-        ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(LoopperTextView);
+                        }
+                    }
+                });
         return view;
     }
 
-    public void getWeatherResult() {
-        String city = urlEt.getText().toString().trim();
-        if (TextUtils.isEmpty(city)) {
-            ToastUtils.showToast("请输入要查询的城市");
-            return;
-        }
-        try {
-            OkHttpUtils.get()
-                    .url("http://wthrcdn.etouch.cn/weather_mini?city=" + URLEncoder.encode(city, "utf-8"))
-                    .addCacheHeader(100)//100秒
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                        }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            textLayout.setText(response);
-                        }
-                    });
-        } catch (UnsupportedEncodingException e) {
+    public void getWeatherResult() {
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("account","admin");
+            jsonObject.put("pwd","123456");
+            jsonObject.put("client",2);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
+//        final String city = mUrlEt.getText().toString().trim();
+//        if (TextUtils.isEmpty(city)) {
+//            ToastUtils.showToast("请输入要查询的城市");
+//            return;
+//        }
+        Observable.create(new ObservableOnSubscribe<Response>() {
+            @Override
+            public void subscribe(ObservableEmitter<Response> e) throws Exception {
+                    Response response  =  OkHttpUtils
+                            .postString()
+                            .url("http://192.168.6.46/improve/Auth/login")
+                            .content(String.valueOf(jsonObject))
+                            .mediaType(NetContants.JSON)
+                            .build()
+                            .execute();
+                e.onNext(response);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<Response>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Consumer<Response>() {
+                    @Override
+                    public void accept(Response response) throws Exception {
+                        String s = response.body().string();
+                        mTextLayout.setText(s);
+                    }
+                });
     }
 
     @Override
@@ -166,41 +208,110 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
 
     private void setBanner() {
-        List<Integer> mList = new ArrayList(Arrays.asList(imagess));
-
-        banner.setOffscreenPageLimit(3);
-        banner.setImages(new ArrayList<>(mList))
+        List<Integer> mList = new ArrayList(Arrays.asList(mImages));
+        mBanner.setOffscreenPageLimit(3);
+        mBanner.setImages(new ArrayList<>(mList))
                 .setImageLoader(new GlideImageLoader()).start();
-        banner.setBannerAnimation(Transformer.ScaleInOut);
+        mBanner.setBannerAnimation(Transformer.ScaleInOut);
+    }
+
+    @OnClick({R.id.url_et, R.id.iv_delete, R.id.url_btn, R.id.md5_btn, R.id.btn_rx, R.id.cacheTest, R.id.notify})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.url_et:
+                break;
+            case R.id.iv_delete:
+                mUrlEt.setText("");
+                break;
+            case R.id.url_btn:
+                getUrlBtn();
+                break;
+            case R.id.md5_btn:
+                getMd5Btn();
+                break;
+            case R.id.btn_rx:
+                countTime();
+                RXjavaTest();
+                break;
+            case R.id.cacheTest:
+                getWeatherResult();
+                break;
+            case R.id.notify:
+                getnotify();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void getnotify() {
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext());
+        Notification notification = builder
+                .setContentTitle("这是通知标题")
+                .setContentText("这是通知内容")
+                .setWhen(System.currentTimeMillis())
+                .setColor(Color.parseColor("#EAA935"))
+                .setSmallIcon(R.mipmap.ic_launcher) //小图
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher)) //大图
+                .build();
+        manager.notify(1, notification);
+    }
+
+    private void getMd5Btn() {
+        String s1 = mUrlEt.getText().toString().trim();
+        if (TextUtils.isEmpty(s1)) {
+            return;
+        }
+        String md5pwd = Md5Utils.encryptpwd(s1);
+        Message msg1 = Message.obtain();
+        msg1.obj = md5pwd;
+        msg1.what = MD5;
+        handler.sendMessage(msg1);
+    }
+
+    private void getUrlBtn() {
+        long time1 = System.currentTimeMillis();
+        String s = String.valueOf(time1);
+        Message msg = Message.obtain();
+        msg.obj = s;
+        msg.what = TIMEOK;
+        handler.sendMessage(msg);
+        String newurl = mUrlEt.getText().toString().trim();
+        if (TextUtils.isEmpty(newurl)) {
+            ToastUtils.showToast("请输入要测试的url地址");
+            return;
+        }
+        loginUUrl(newurl);
     }
 
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            //Glide 加载图片简单用法
             Glide.with(context).load(path).centerCrop().into(imageView);
         }
 
     }
 
-    // rxjava 实现  内存泄露？？
-    private Runnable LoopperTextView = new Runnable() {
+    private Runnable looppertextview = new Runnable() {
         @Override
         public void run() {
             while (true) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        textSwitcher.setText(textStr[index]);
-                        index++;
-                        if (index == textStr.length) {
-                            index = 0;
-                        }
-                        Log.e(TAG, textStr[index]);
-                    }
-                });
                 try {
-                    Thread.sleep(3000);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.e(TAG, textStr[index]);
+                            String s = textStr[index];
+                            mTvMessage.setText(s);
+                            index++;
+                            if (index == textStr.length) {
+                                index = 0;
+                            }
+
+                        }
+                    });
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -209,8 +320,49 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         }
     };
 
+    public void timerOperable() {
+        Observable.interval(1, 2, TimeUnit.SECONDS)
+                .map(new Function<Long, Long>() {
+                    @Override
+                    public Long apply(Long aLong) throws Exception {
+                        return aLong % (long) textStr.length;
+                    }
+                })
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        index = (int) (long) aLong;
+                        LogUtils.e("timerOperable:" + textStr[index]);
+                        mTvMessage.setText(textStr[index]);
+                    }
+                });
+
+
+    }
+
+    //联合检测 RXJava2
+    public void contacCheck() {
+
+        Observable.combineLatest(Observable.just(1), Observable.just(2), Observable.just(2),
+                new Function3<Integer, Integer, Integer, Boolean>() {
+                    @Override
+                    public Boolean apply(Integer integer, Integer integer2, Integer integer3) throws Exception {
+                        return true;
+                    }
+                }).compose(this.<Boolean>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        LogUtils.e("contacCheck:" + aBoolean);
+                    }
+                });
+    }
+
     private void initLooperTextView() {
-        textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+        mTvMessage.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
                 TextView textView = new TextView(MyApplication.getContext());
@@ -226,7 +378,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
             }
         });
 
-        textSwitcher.setOnClickListener(new View.OnClickListener() {
+        mTvMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (index) {
@@ -258,52 +410,13 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        banner.isAutoPlay(true);
+        mBanner.isAutoPlay(true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ThreadPoolProxyFactory.getNormalThreadPoolProxy().remove(LoopperTextView);
-    }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.url_btn:
-                long time1 = System.currentTimeMillis();
-                String s = String.valueOf(time1);
-                Message msg = Message.obtain();
-                msg.obj = s;
-                msg.what = TIMEOK;
-                handler.sendMessage(msg);
-                String newurl = urlEt.getText().toString().trim();
-                if (TextUtils.isEmpty(newurl)) {
-                    ToastUtils.showToast("请输入要测试的url地址");
-                    return;
-                }
-                loginUUrl(newurl);
-                break;
-            case R.id.iv_delete:
-                urlEt.setText("");
-                break;
-            case R.id.btn_rx:
-                RXjavaTest();
-                break;
-            case R.id.md5_btn:
-                String s1 = urlEt.getText().toString().trim();
-                if (TextUtils.isEmpty(s1)) {
-                    return;
-                }
-                String md5pwd = Md5Utils.encryptpwd(s1);
-                Message msg1 = Message.obtain();
-                msg1.obj = md5pwd;
-                msg1.what = MD5;
-                handler.sendMessage(msg1);
-                break;
-            default:
-                break;
-        }
     }
 
 
@@ -313,9 +426,9 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                     .url(url)
                     .get()//http://192.169.6.119/login/login/login/tel/15974255013/pwd/123456/code/wrty
                     .build();
-            client.newCall(requst).enqueue(new Callback() {
+            mOkHttpClient.newCall(requst).enqueue(new Callback() {
                 @Override
-                public void onFailure(okhttp3.Call call, IOException e) {
+                public void onFailure(Call call, IOException e) {
                     ToastUtils.showToast("网络不佳，登录失败");
                     Message msg = Message.obtain();
                     msg.what = ERROR;
@@ -323,7 +436,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                 }
 
                 @Override
-                public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                public void onResponse(Call call, Response response) throws IOException {
                     String s = response.body().string().trim();
                     try {
                         JSONObject object = new JSONObject(s);
@@ -348,37 +461,29 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         }
     }
 
-
     public void RXjavaTest() {
-        Observable.create(new Observable.OnSubscribe<Integer>() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                try {
-                    for (int i = 0; i < 1000; i++) {
-                        subscriber.onNext(i);
-                        Thread.sleep(2000);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                for (int i = 0; i < 1000; i++) {
+                    e.onNext(i);
+                    Thread.sleep(2000);
                 }
             }
-        }).subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
-                .filter(new Func1<Integer, Boolean>() {
+        })
+                .subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
+                .filter(new Predicate<Integer>() { // 过滤的作用
                     @Override
-                    public Boolean call(Integer integer) {
-                        return integer%2 == 0;
+                    public boolean test(Integer integer) throws Exception {
+                        return integer % 2 == 0;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
-                .subscribe(new Action1<Integer>() {
+                .compose(this.<Integer>bindUntilEvent(FragmentEvent.DESTROY))
+                .subscribe(new Consumer<Integer>() {
                     @Override
-                    public void call(Integer integer) {
-                        ToastUtils.showToast(integer + "");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-
+                    public void accept(Integer integer) throws Exception {
+                        ToastUtils.showToast("" + integer);
                     }
                 });
 
@@ -412,36 +517,6 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
                 });*/
     }
 
-    /**
-     * 监听手机号码的长度
-     */
-    CharSequence temp = "";
-
-
-    public class MyTextWatchers implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            temp = s;
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (temp.length() > 0 && !urlEt.getText().toString().isEmpty()) {
-                ivDelete.setVisibility(View.VISIBLE);
-                temp = "";
-            } else if (urlEt.getText().toString().length() > 0) {
-                ivDelete.setVisibility(View.VISIBLE);
-            } else {
-                ivDelete.setVisibility(View.INVISIBLE);
-
-            }
-        }
-    }
-
 
     private class MyHandler extends Handler {
         //弱引用防止内存泄漏
@@ -452,7 +527,7 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
         }
 
         @Override
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             MainActivity activity = mActivity.get();
             switch (msg.what) {
                 case ERROR:
@@ -461,20 +536,20 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
                 case ERROR_CITY:
                     String str = (String) msg.obj;
-                    urlLog.setText(str);
+                    mLogTv.setText(str);
                     Toast.makeText(activity, "检查url是否正确", Toast.LENGTH_SHORT).show();
                     break;
                 case SUCCESS:
                     String strw = (String) msg.obj;
-                    urlLog.setText(strw);
+                    mLogTv.setText(strw);
                     break;
                 case TIMEOK:
                     String strTime = (String) msg.obj;
-                    time.setText(strTime);
+                    mTime.setText(strTime);
                     break;
                 case MD5:
                     String md = (String) msg.obj;
-                    urlLog.setText(md);
+                    mLogTv.setText(md);
                     break;
                 default:
                     break;
@@ -483,9 +558,64 @@ public class Fragment1 extends BaseFragment implements View.OnClickListener {
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    private void countTime() {
+       countdown(10)
+
+               .doOnSubscribe(new Consumer<Disposable>() {
+                   @Override
+                   public void accept(Disposable disposable) throws Exception {
+                       LogUtils.e("开始计时");
+                   }
+               })
+
+               .subscribe(new Observer<Integer>() {
+                   @Override
+                   public void onSubscribe(Disposable d) {
+
+                   }
+
+                   @Override
+                   public void onNext(Integer integer) {
+                       LogUtils.e("当前计时：" + integer);
+                   }
+
+                   @Override
+                   public void onError(Throwable e) {
+
+                   }
+
+                   @Override
+                   public void onComplete() {
+                       LogUtils.e("计时完成");
+                   }
+               });
+
+
+
     }
+
+    /***
+     * 倒计时
+     */
+
+   public Observable<Integer> countdown(int time) {
+        if (time < 0) {
+            time = 0;
+        }
+        final int countTime = time;
+        return Observable.interval(0, 1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<Long, Integer>() {
+                    @Override
+                    public Integer apply(Long aLong){
+                        return countTime - aLong.intValue();
+                    }
+                })
+                .take(countTime + 1);
+
+    }
+
+
 }
 
