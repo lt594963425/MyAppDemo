@@ -4,27 +4,30 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.example.administrator.base.BaseActivity;
 import com.example.administrator.utils.NetWorkUtils;
 
 /**
+ * 监听网络状态
  * Created by LiuTao on 2017/7/28 0028.
  */
 
 public class NetWorkStatusReceiver extends BroadcastReceiver {
 
-    public NetWorkStatusReceiver() {
+    public NetChange evevt = MainActivity.evevt;
 
+    public interface NetChange {
+        void onNetChange(int netMobile);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            Toast.makeText(context, "network changed", Toast.LENGTH_LONG).show();
-            BaseActivity.isNetWorkConnected = NetWorkUtils.getAPNType(context)>0;
+        if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            int netWorkState = NetWorkUtils.getNetType(context);
+
+            Log.e("网络状态:", netWorkState + "");
+            evevt.onNetChange(netWorkState);
         }
     }
 }

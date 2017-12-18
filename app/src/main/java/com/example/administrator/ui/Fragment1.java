@@ -30,17 +30,15 @@ import com.example.administrator.MainActivity;
 import com.example.administrator.MyApplication;
 import com.example.administrator.R;
 import com.example.administrator.base.BaseFragment;
-import com.example.administrator.net.NetContants;
 import com.example.administrator.utils.AndroidBug5497Workaround;
 import com.example.administrator.utils.LogUtils;
 import com.example.administrator.utils.Md5Utils;
 import com.example.administrator.utils.ToastUtils;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +71,6 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.functions.Action1;
 
 
 /**
@@ -140,20 +137,35 @@ public class Fragment1 extends BaseFragment {
         handler = new MyHandler((MainActivity) getContext());
         initLooperTextView();
         // ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(looppertextview);
+//        RxTextView.textChanges(mUrlEt)
+//                .subscribe(new Action1<CharSequence>() {
+//                    @Override
+//                    public void call(CharSequence charSequence) {
+//                        if (!mUrlEt.getText().toString().isEmpty()) {
+//                            mIvDelete.setVisibility(View.VISIBLE);
+//                        } else if (mUrlEt.getText().toString().length() > 0) {
+//                            mIvDelete.setVisibility(View.VISIBLE);
+//                        } else {
+//                            mIvDelete.setVisibility(View.INVISIBLE);
+//
+//                        }
+//                    }
+//                });
         RxTextView.textChanges(mUrlEt)
-                .subscribe(new Action1<CharSequence>() {
+                .throttleFirst(1,TimeUnit.SECONDS)
+                .subscribe(new Consumer<CharSequence>() {
                     @Override
-                    public void call(CharSequence charSequence) {
+                    public void accept(CharSequence charSequence) throws Exception {
                         if (!mUrlEt.getText().toString().isEmpty()) {
                             mIvDelete.setVisibility(View.VISIBLE);
                         } else if (mUrlEt.getText().toString().length() > 0) {
                             mIvDelete.setVisibility(View.VISIBLE);
                         } else {
                             mIvDelete.setVisibility(View.INVISIBLE);
-
                         }
                     }
                 });
+
         return view;
     }
 
@@ -162,6 +174,8 @@ public class Fragment1 extends BaseFragment {
         super.onResume();
     }
 
+
+    //缓存
     public void getWeatherResult() {
         final JSONObject jsonObject = new JSONObject();
         try {
@@ -177,28 +191,7 @@ public class Fragment1 extends BaseFragment {
 //            ToastUtils.showToast("请输入要查询的城市");
 //            return;
 //        }
-        Observable.create(new ObservableOnSubscribe<Response>() {
-            @Override
-            public void subscribe(ObservableEmitter<Response> e) throws Exception {
-                    Response response  =  OkHttpUtils
-                            .postString()
-                            .url("http://192.168.6.46/improve/Auth/login")
-                            .content(String.valueOf(jsonObject))
-                            .mediaType(NetContants.JSON)
-                            .build()
-                            .execute();
-                e.onNext(response);
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response>bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(new Consumer<Response>() {
-                    @Override
-                    public void accept(Response response) throws Exception {
-                        String s = response.body().string();
-                        mTextLayout.setText(s);
-                    }
-                });
+
     }
 
     @Override

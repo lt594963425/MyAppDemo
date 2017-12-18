@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.utils.LogUtils;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -37,7 +37,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
-import rx.functions.Action1;
 
 import static com.example.administrator.net.NetContants.JSON;
 
@@ -65,9 +64,9 @@ public class RXJavaActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         RxView.clicks(mRxjavaOneBtn)
                 .throttleFirst(30, TimeUnit.SECONDS)
-                .subscribe(new Action1<Void>() {
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Void aVoid) {
+                    public void accept(Object o) throws Exception {
                         countTime(30);
                         LogUtils.e("开始计时");
                     }
@@ -96,7 +95,11 @@ public class RXJavaActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(String response, int id) {
                                 Log.e(TAG,response);
-                                RxTextView.text(mRxText).call(response);
+                                try {
+                                    RxTextView.text(mRxText).accept(response);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
             }
@@ -129,7 +132,11 @@ public class RXJavaActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(Integer integer) {
-                        RxTextView.text(mRxjavaOneBtn).call("剩余" + (integer) + "秒");
+                        try {
+                            RxTextView.text(mRxjavaOneBtn).accept("剩余" + (integer) + "秒");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         Log.e(TAG, "当前计时：" + integer);
                     }
 
@@ -140,7 +147,11 @@ public class RXJavaActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        RxTextView.text(mRxjavaOneBtn).call("重新获取验证码");
+                        try {
+                            RxTextView.text(mRxjavaOneBtn).accept("重新获取验证码");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         Log.e(TAG, "计时完成");
                     }
                 });

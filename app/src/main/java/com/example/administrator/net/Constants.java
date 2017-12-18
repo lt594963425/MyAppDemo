@@ -11,4 +11,7 @@ public class Constants {
 
     //sp文件名
     public static String SP_XML_NAME = "fi_xml";
+
+    public static final String SERVER = "http://server.jeasonlzy.com/OkHttpUtils/";
+    public static final String URL_DOWNLOAD = SERVER + "download";
 }

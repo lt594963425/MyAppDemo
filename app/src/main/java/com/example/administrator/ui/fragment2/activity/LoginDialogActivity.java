@@ -8,11 +8,11 @@ import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
 import com.example.administrator.ui.fragment2.View.ButtomDialogFragment;
 import com.example.administrator.ui.fragment2.View.LoginDialogFragment;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
 
 /**
  * $name
@@ -36,23 +36,24 @@ public class LoginDialogActivity extends BaseActivity implements LoginDialogFrag
         setContentView(R.layout.activity_login_dialog);
         setTitle("LoginDialogFrament");
         ButterKnife.bind(this);
-        RxView.clicks(mButtonLogin).subscribe(new Action1<Void>() {
+        RxView.clicks(mButtonLogin).subscribe(new Consumer<Object>() {
+
             @Override
-            public void call(Void aVoid) {
+            public void accept(Object o) throws Exception {
                 showLoginDialog();
             }
         });
-        RxView.clicks(mButtonLogin2).subscribe(new Action1<Void>() {
+        RxView.clicks(mButtonLogin2).subscribe(new Consumer<Object>() {
             @Override
-            public void call(Void aVoid) {
-            showLoginDialog2();
+            public void accept(Object o) throws Exception {
+                showLoginDialog2();
             }
         });
     }
 
     private void showLoginDialog2() {
        ButtomDialogFragment buttomDialogFragment =  new ButtomDialogFragment();
-        buttomDialogFragment.show(getFragmentManager(), "loginDialog2");
+        buttomDialogFragment.show(this.getFragmentManager(), "loginDialog2");
     }
 
 

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.R;
@@ -71,7 +72,6 @@ public class Fragment3 extends BaseFragment {
     }
 
 
-
     public void timerOperable() {
         io.reactivex.Observable.interval(1, 2, TimeUnit.SECONDS)
                 .map(new Function<Long, Long>() {
@@ -114,6 +114,10 @@ public class Fragment3 extends BaseFragment {
                 mViewPager.setCurrentItem(position);
             }
         });
+        //设置红点
+        mTabLayout.getTabAt(2).setCustomView(R.layout.tab_dot_item);
+        TextView textView = mTabLayout.getTabAt(2).getCustomView().findViewById(R.id.tv_tab_title);
+        textView.setText("OkRx2");
     }
 
     @Override
@@ -131,7 +135,6 @@ public class Fragment3 extends BaseFragment {
     }
 
     private class MainAdapter extends FragmentPagerAdapter {
-
         MainAdapter(FragmentManager fm) {
             super(fm);
         }

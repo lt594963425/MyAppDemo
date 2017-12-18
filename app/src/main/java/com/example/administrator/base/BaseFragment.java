@@ -112,7 +112,6 @@ public abstract class BaseFragment extends RxFragment {
         isFirstLoad = false;
         initData();
     }
-
     protected abstract View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     protected abstract void initData();
@@ -136,6 +135,9 @@ public abstract class BaseFragment extends RxFragment {
         this.startActivityForResult(mIntent, i);
         getActivity().overridePendingTransition(R.anim.zoom_enter, R.anim.no_anim);
     }
+
+
+
     /*将字符串转为时间戳*/
     public static long getStringToDate(String time) {
         sdf = new SimpleDateFormat("yyyy年MM月dd日");

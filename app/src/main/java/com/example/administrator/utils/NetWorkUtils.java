@@ -95,7 +95,7 @@ public class NetWorkUtils {
      * @param context
      * @return
      */
-    public static int getAPNType(Context context) {
+    public static int getNetType(Context context) {
         int netType = 0;
         ConnectivityManager connMgr = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);

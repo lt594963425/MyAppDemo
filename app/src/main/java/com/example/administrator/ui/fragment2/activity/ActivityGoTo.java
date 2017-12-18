@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
+import com.example.administrator.ui.adapter.TextArrayAdapter;
 import com.example.administrator.utils.ToastUtils;
 
 import java.net.URISyntaxException;
@@ -64,10 +64,11 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
     private void initSpanner() {
         Spinner spinner = findViewById(R.id.spinner1);
         String[] mItems = getResources().getStringArray(R.array.languages);
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mItems);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        TextArrayAdapter mAdapter = new TextArrayAdapter(this,mItems);
+        //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mItems);
+        mAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         //绑定 Adapter到控件
-        spinner .setAdapter(adapter);
+        spinner .setAdapter(mAdapter);
     }
     @Override
     public void onClick(View v) {

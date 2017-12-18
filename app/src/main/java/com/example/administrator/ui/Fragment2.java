@@ -26,14 +26,14 @@ import com.example.administrator.ui.fragment2.activity.RecyclerViewActivity;
 import com.example.administrator.ui.fragment2.activity.TestORCActivity;
 import com.example.administrator.ui.fragment2.activity.XuanZhuanActivity;
 import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -60,9 +60,9 @@ public class Fragment2 extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_two, null);
         ButterKnife.bind(this, view);
         RxView.clicks(mRxJavaBtn).throttleFirst(1, TimeUnit.SECONDS)
-        .subscribe(new Action1<Void>() {
+        .subscribe(new Consumer<Object>() {
             @Override
-            public void call(Void aVoid) {
+            public void accept(Object o) throws Exception {
                 openActivity(RXJavaActivity.class);
             }
         });

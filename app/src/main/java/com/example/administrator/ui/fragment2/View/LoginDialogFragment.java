@@ -18,7 +18,7 @@ import com.example.administrator.R;
  * @date 2017/11/21/021
  */
 
-public class LoginDialogFragment extends DialogFragment {
+public  class LoginDialogFragment extends DialogFragment {
     private EditText mUsername;
     private EditText mPassword;
 
@@ -46,11 +46,7 @@ public class LoginDialogFragment extends DialogFragment {
             mUsername.setText(savedInstanceState.getString("name"));
             mPassword.setText(savedInstanceState.getString("password"));
         }
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton("Sign in",
+        builder.setView(view).setPositiveButton("Sign in",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {

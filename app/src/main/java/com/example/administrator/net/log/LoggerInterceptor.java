@@ -60,7 +60,6 @@ public class LoggerInterceptor implements Interceptor
             Log.e(tag, "protocol : " + clone.protocol());
             if (!TextUtils.isEmpty(clone.message()))
                 Log.e(tag, "message : " + clone.message());
-
             if (showResponse)
             {
                 ResponseBody body = clone.body();

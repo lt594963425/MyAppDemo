@@ -1,11 +1,14 @@
 package com.example.administrator;
 
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +38,7 @@ import butterknife.ButterKnife;
 /**
  * @author LiuTao
  */
-public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener, Toolbar.OnMenuItemClickListener {
+public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener, Toolbar.OnMenuItemClickListener, NetWorkStatusReceiver.NetChange {
     @BindView(R.id.pager)
     ViewPager mViewPager;
     @BindView(android.R.id.tabhost)
@@ -52,15 +55,60 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     public ArrayList<String> mDatas = null;
     private FixPagerAdapter mFixPagerAdapter;
 
+    private NetWorkStatusReceiver mNetworkChangedReceiver;
+    public static NetWorkStatusReceiver.NetChange evevt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        netRegistReceiver();
         initToolbar();
         initData();
         initViewPagerFargment();//初始化控件
         initSearchView();
+    }
+
+    private void netRegistReceiver() {
+        evevt = this;
+        mNetworkChangedReceiver = new NetWorkStatusReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mNetworkChangedReceiver, intentFilter);
+
+
+    }
+
+    /**
+     * 获取当前的网络状态 ：
+     * 没有网络  0,
+     * WIFI网络 1,
+     * 3G网络   2,
+     * 2G网络   3
+     *
+     * @param netMobile
+     */
+    @Override
+    public void onNetChange(int netMobile) {
+        Log.e("TAG", "当前网络状态" + netMobile);
+        ToastUtils.showToast("当前网络状态" + netMobile);
+        switch (netMobile) {
+            case 0:
+                // mMobileNetStatus.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                // mMobileNetStatus.setVisibility(View.GONE);
+                break;
+            case 2:
+                // mMobileNetStatus.setVisibility(View.GONE);
+                break;
+            case 3:
+                //  mMobileNetStatus.setVisibility(View.GONE);
+                break;
+            default:
+                // mMobileNetStatus.setVisibility(View.GONE);
+                break;
+        }
     }
 
     private void initData() {
@@ -222,5 +270,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mNetworkChangedReceiver);
+    }
 }
