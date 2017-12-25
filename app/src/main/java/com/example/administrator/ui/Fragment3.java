@@ -1,6 +1,10 @@
 package com.example.administrator.ui;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,8 +31,11 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -39,9 +46,20 @@ public class Fragment3 extends BaseFragment {
     @BindView(R.id.image_logo)
     ImageView mImageSwitcher;
     Unbinder unbinder;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.tab)
+    TabLayout mTab;
+    @BindView(R.id.appbar)
+    AppBarLayout mAppbar;
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.toolbar_title)
+    TextView mToolbarTitle;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
     //String url = "http://www.huhst.edu.cn:8001/";
     private TabLayout mTabLayout;
-    public ViewPager mViewPager;
     private Toolbar toolbar;
     private List<Pair<String, Fragmenta>> items;
     String[] mImages = new String[]{
@@ -53,6 +71,7 @@ public class Fragment3 extends BaseFragment {
     int index = 0;
     private ImageLoader mImageLoader;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, null);
@@ -67,21 +86,20 @@ public class Fragment3 extends BaseFragment {
             }
         });
         initToolBar(toolbar, false, "");
-
         return view;
     }
 
 
     public void timerOperable() {
-        io.reactivex.Observable.interval(1, 2, TimeUnit.SECONDS)
+        Observable.interval(1, 2, TimeUnit.SECONDS)
                 .map(new Function<Long, Long>() {
                     @Override
                     public Long apply(Long aLong) throws Exception {
                         return aLong % (long) mImages.length;
                     }
                 })
-                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long l) throws Exception {
@@ -98,7 +116,7 @@ public class Fragment3 extends BaseFragment {
     protected void initData() {
         items = new ArrayList<>();
         items.add(new Pair<>("OkGo", new Fragmenta()));
-        items.add(new Pair<>("okhttp", new Fragmenta()));
+        items.add(new Pair<>("okHttp", new Fragmenta()));
         items.add(new Pair<>("OkRx2", new Fragmenta()));
         items.add(new Pair<>("OkRx", new Fragmenta()));
         items.add(new Pair<>("OkDownload", new Fragmenta()));

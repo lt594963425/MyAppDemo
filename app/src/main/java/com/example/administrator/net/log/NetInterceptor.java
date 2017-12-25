@@ -1,7 +1,13 @@
 package com.example.administrator.net.log;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.administrator.MyApplication;
+import com.example.administrator.loginMvp.ui.LoginActivity;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -15,15 +21,17 @@ import okhttp3.ResponseBody;
 import okio.Buffer;
 
 /**
- * Created by zhy on 16/3/1.
+ *
+ * @author zhy
+ * @date 16/3/1
  */
-public class LoggerInterceptor implements Interceptor
+public class NetInterceptor implements Interceptor
 {
     public static final String TAG = "OkHttpUtils";
     private String tag;
     private boolean showResponse;
 
-    public LoggerInterceptor(String tag, boolean showResponse)
+    public NetInterceptor(String tag, boolean showResponse)
     {
         if (TextUtils.isEmpty(tag))
         {
@@ -33,7 +41,7 @@ public class LoggerInterceptor implements Interceptor
         this.tag = tag;
     }
 
-    public LoggerInterceptor(String tag)
+    public NetInterceptor(String tag)
     {
         this(tag, false);
     }
@@ -58,8 +66,9 @@ public class LoggerInterceptor implements Interceptor
             Log.e(tag, "url : " + clone.request().url());
             Log.e(tag, "code : " + clone.code());
             Log.e(tag, "protocol : " + clone.protocol());
-            if (!TextUtils.isEmpty(clone.message()))
+            if (!TextUtils.isEmpty(clone.message())) {
                 Log.e(tag, "message : " + clone.message());
+            }
             if (showResponse)
             {
                 ResponseBody body = clone.body();
@@ -73,7 +82,23 @@ public class LoggerInterceptor implements Interceptor
                         {
                             String resp = body.string();
                             Log.e(tag, "responseBody's content : " + resp);
+                            JSONObject jsonObject = new JSONObject(resp);
+                            String code = jsonObject.optString("code");
+                            String var = jsonObject.optString("var");
+                            if ("error".equals(code)) {
+                                switch (var) {
+                                    case "auth failed":
 
+                                        MyApplication.getContext()
+                                                .getApplicationContext()
+                                                .startActivity(new Intent(MyApplication.getContext().getApplicationContext(), LoginActivity.class));
+                                        break;
+                                    default:
+                                        break;
+
+                                }
+
+                            }
                             body = ResponseBody.create(mediaType, resp);
                             return response.newBuilder().body(body).build();
                         } else
@@ -87,7 +112,7 @@ public class LoggerInterceptor implements Interceptor
             Log.e(tag, "========response'log=======end");
         } catch (Exception e)
         {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
 
         return response;
@@ -126,7 +151,7 @@ public class LoggerInterceptor implements Interceptor
             Log.e(tag, "========request'log=======end");
         } catch (Exception e)
         {
-//            e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -142,8 +167,9 @@ public class LoggerInterceptor implements Interceptor
                     mediaType.subtype().equals("xml") ||
                     mediaType.subtype().equals("html") ||
                     mediaType.subtype().equals("webviewhtml")
-                    )
+                    ) {
                 return true;
+            }
         }
         return false;
     }
