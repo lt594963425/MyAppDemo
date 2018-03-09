@@ -5,8 +5,11 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.example.administrator.R;
@@ -57,5 +60,20 @@ public  class LoginDialogFragment extends DialogFragment {
                             }
                         }).setNegativeButton("Cancel", null);
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        Log.e("TAG", "-------------ButtomDialogFragment------onStart------------------");
+        super.onStart();
+        // setBackgroundTranst();
+
+    }
+    private void setBackgroundTranst() {
+        //背景设为透明色
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.0f;
+        window.setAttributes(windowParams);
     }
 }

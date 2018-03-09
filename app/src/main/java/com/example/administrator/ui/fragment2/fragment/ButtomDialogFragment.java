@@ -33,7 +33,7 @@ public class ButtomDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // 使用不带Theme的构造器, 获得的dialog边框距离屏幕仍有几毫米的缝隙。
-        Dialog dialog = new Dialog(getActivity(), R.style.BottomDialog);
+        Dialog dialog = new Dialog(getActivity(), R.style.FPVDialog);
         View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_login_dialog, null);
         dialog.setContentView(inflate);
         dialog.setCancelable(true);
@@ -80,7 +80,7 @@ public class ButtomDialogFragment extends DialogFragment {
     public void onStart() {
         Log.e("TAG", "-------------ButtomDialogFragment------onStart------------------");
         super.onStart();
-        setBackgroundTranst();
+       // setBackgroundTranst();
 
     }
 
