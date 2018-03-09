@@ -1,5 +1,6 @@
 package com.example.administrator.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
@@ -14,9 +15,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.administrator.R;
-import java.lang.reflect.Field;
 
+import com.example.administrator.R;
+
+import java.lang.reflect.Field;
 
 
 /**
@@ -43,8 +45,9 @@ public class XToolbar extends Toolbar {
         resolveAttribute(context, attrs, defStyleAttr);
     }
 
+    @SuppressLint({"RestrictedApi", "PrivateResource"})
     private void resolveAttribute(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
+        @SuppressLint("RestrictedApi") final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
                 R.styleable.Toolbar, defStyleAttr, 0);
         mTitleAppearance = a.getResourceId(R.styleable.Toolbar_titleTextAppearance, 0);
         a.recycle();
@@ -69,7 +72,8 @@ public class XToolbar extends Toolbar {
             }
             if (mTitleTextView.getParent() != this) addCenterView(mTitleTextView);
             mTitleTextView.setText(title);
-        } else if (mTitleTextView != null && mTitleTextView.getParent() == this) removeView(mTitleTextView);
+        } else if (mTitleTextView != null && mTitleTextView.getParent() == this)
+            removeView(mTitleTextView);
         mTitle = title;
     }
 
@@ -135,19 +139,20 @@ public class XToolbar extends Toolbar {
     }
 
     public void setGravityCenter() {
+
         post(new Runnable() {
             @Override
             public void run() {
-                setCenter("mNavButtonView");
+                setCenter();
 //                setCenter("mMenuView");
             }
 
         });
     }
 
-    private void setCenter(String fieldName) {
+    private void setCenter() {
         try {
-            Field field = getClass().getSuperclass().getDeclaredField(fieldName);//反射得到父类Field
+            Field field = getClass().getSuperclass().getDeclaredField("mNavButtonView");//反射得到父类Field
             field.setAccessible(true);
             Object obj = field.get(this);//拿到对应的Object
             if (obj == null) return;

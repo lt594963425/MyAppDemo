@@ -26,6 +26,7 @@ import com.example.administrator.recyclerviewadapter.pullrefresh.PullToRefreshVi
 import com.example.administrator.recyclerviewadapter.wrapper.HeaderAndFooterWrapper;
 import com.example.administrator.recyclerviewadapter.wrapper.LoadMoreWrapper;
 import com.example.administrator.ui.wrapper.EmptyWrapper;
+import com.example.administrator.utils.ToastUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
@@ -93,6 +94,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                ToastUtils.showToast("长按");
                 return false;
             }
         });
@@ -104,11 +106,22 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mPullToRefreshView.setListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                for (int i = 0; i < 10; i++) {
+                    mDatas.add(0, "Add:" + i);
+
+                }
+                mAdapter.notifyDataSetChanged();
+                mPullToRefreshView.onFinishLoading();
                 Log.e(TAG, "onRefresh");
             }
 
             @Override
             public void onLoadMore() {
+                for (int i = 0; i < 10; i++) {
+                    mDatas.add("Add:" + i);
+                }
+                mAdapter.notifyDataSetChanged();
+                mPullToRefreshView.onFinishLoading();
                 Log.e(TAG, "onLoadMore");
             }
         });

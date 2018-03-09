@@ -1,4 +1,4 @@
-package com.example.administrator.ui.fragment2.View;
+package com.example.administrator.ui.fragment2.fragment;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

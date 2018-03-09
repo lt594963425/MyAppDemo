@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -61,15 +62,23 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
         setTitle("去哪儿");
         mGo.setOnClickListener(this);
     }
+
     private void initSpanner() {
         Spinner spinner = findViewById(R.id.spinner1);
         String[] mItems = getResources().getStringArray(R.array.languages);
-        TextArrayAdapter mAdapter = new TextArrayAdapter(this,mItems);
+        TextArrayAdapter mAdapter = new TextArrayAdapter(this, mItems);
         //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, mItems);
         mAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         //绑定 Adapter到控件
-        spinner .setAdapter(mAdapter);
+        spinner.setAdapter(mAdapter);
+        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
     }
+
     @Override
     public void onClick(View v) {
         mAddress = mInputAddress.getText().toString().trim();
@@ -82,16 +91,16 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
                 showGoDialog();
                 break;
             case R.id.go_baidu:
-                ToastUtils.showToast("go_baidu");
+                ToastUtils.showToast("go_baiDu");
                 setGoBaidu(mAddress);
                 break;
             case R.id.go_gaode:
                 setMiniMap(mAddress);
-                ToastUtils.showToast("go_gaode");
+                ToastUtils.showToast("go_gaoDe");
                 break;
             case R.id.go_goolge:
                 setGooGel(mAddress);
-                ToastUtils.showToast("go_goolge");
+                ToastUtils.showToast("go_google");
                 break;
             default:
                 break;

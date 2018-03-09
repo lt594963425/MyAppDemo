@@ -18,12 +18,6 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-/**
- * 回弹效果
- * @author LiuTao
- */
 public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObserver.OnGlobalLayoutListener {
   
   
@@ -40,7 +34,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
   
     //滚动时，移动的view和位置  
     private List<View> mMoveViews = new ArrayList<View>();
-    private List<Rect> mMoveRects = new ArrayList<Rect>();  
+    private List<Rect> mMoveRects = new ArrayList<Rect>();
   
     // 在手指滑动的过程中记录是否移动了布局  
     private boolean isMoved = false;  
@@ -63,7 +57,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
         this(context, attrs, 0);  
     }  
   
-    public PullRecyclerViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {  
+    public PullRecyclerViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();  
     }
@@ -79,7 +73,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
     /** 
      * 加载布局后初始化,这个方法会在加载完布局后调用 
      */  
-    @Override  
+    @Override
     protected void onFinishInflate() {  
         //此处为容器中的子view   必须有RecyclerView、ListView、ScrollView，当然这里忽略ListView和ScrollView  
         if (getChildCount() > 0) {  
@@ -88,14 +82,14 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
                     if (childView == null) {  
                         childView = getChildAt(i);  
                     } else {  
-                        throw new RuntimeException("PullRecyclerViewGroup 中只能存在一个RecyclerView、ListView或者ScrollView");  
+                        throw new RuntimeException("PullRecyclerViewGroup 中只能存在一个RecyclerView、ListView或者ScrollView");
                     }  
                 }  
             }  
         }  
   
         if (childView == null) {  
-            throw new RuntimeException("PullRecyclerViewGroup 子容器中必须有一个RecyclerView、ListView或者ScrollView");  
+            throw new RuntimeException("PullRecyclerViewGroup 子容器中必须有一个RecyclerView、ListView或者ScrollView");
         }  
         //布局重绘监听，比如华为屏幕键盘可以弹出和隐藏，改变布局，加监听就可以随键盘弹出关闭的变化而变化
         getViewTreeObserver().addOnGlobalLayoutListener(this);  
@@ -104,17 +98,17 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
     }  
   
   
-    @Override  
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {  
         super.onLayout(changed, l, t, r, b);  
         //ScrollView中唯一的子控件的位置信息，这个位置在整个控件的生命周期中保持不变  
         originalRect.set(childView.getLeft(), childView.getTop(), childView.getRight(), childView.getBottom());
         for (int i = 0; i < mMoveViews.size(); i++) {  
-            final View v = mMoveViews.get(i);  
-            v.addOnLayoutChangeListener(new OnLayoutChangeListener() {  
-                @Override  
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {  
-                    Rect rect = new Rect();  
+            final View v = mMoveViews.get(i);
+            v.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    Rect rect = new Rect();
                     rect.set(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());  
                     mMoveRects.add(rect);  
                     v.removeOnLayoutChangeListener(this);  
@@ -127,7 +121,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
      * 事件分发 
      */  
   
-    @Override  
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (childView == null) {  
             return super.dispatchTouchEvent(ev);  
@@ -220,8 +214,8 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
      * @param ev 
      * @return 
      */  
-    @Override  
-    public boolean onInterceptTouchEvent(MotionEvent ev) {  
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         return false;  //不拦截  直接传递给子的view  
     }  
   
@@ -291,7 +285,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
     }  
   
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override  
+    @Override
     public void onGlobalLayout() {  
         //华为手机屏幕下方的返回、home键显示隐藏改变布局  
         requestLayout();  
@@ -302,7 +296,7 @@ public class PullRecyclerViewGroup extends LinearLayout implements ViewTreeObser
      * 跟随弹性移动的view 
      * @param view 
      */  
-    public void setMoveViews(View view) {  
+    public void setMoveViews(View view) {
         this.mMoveViews.add(view);  
         requestLayout();  
     }  

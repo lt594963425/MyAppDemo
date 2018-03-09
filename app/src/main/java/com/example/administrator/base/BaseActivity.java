@@ -65,6 +65,13 @@ public class BaseActivity extends RxAppCompatActivity {
         //setStatusBarPaddingAndHeight(mXToolbar);
     }
 
+    /**
+     * 初始化 Toolbar
+     */
+    public void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
+        toolbar.setTitle(title);
+    }
+
     //设置状态栏为透明
     public void setStatas() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -195,13 +202,6 @@ public class BaseActivity extends RxAppCompatActivity {
 
     public void setTitle(String title) {
         mXToolbar.setTitle(title);
-    }
-
-    /**
-     * 初始化 Toolbar
-     */
-    public void initToolBar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
-        toolbar.setTitle(title);
     }
 
     public void showToast(String msg) {

@@ -124,6 +124,7 @@ public class Fragment1 extends BaseFragment {
     private Handler handler;
     private int index = 0;
     private Unbinder mUnbinder;
+    private Disposable mDisposable;
 
     //String url = "http://wthrcdn.etouch.cn/weather_mini?city=%E6%B7%B1%E5%9C%B3";
     @Override
@@ -152,7 +153,7 @@ public class Fragment1 extends BaseFragment {
 //                    }
 //                });
         RxTextView.textChanges(mUrlEt)
-                .throttleFirst(1,TimeUnit.SECONDS)
+                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(new Consumer<CharSequence>() {
                     @Override
                     public void accept(CharSequence charSequence) throws Exception {
@@ -179,9 +180,9 @@ public class Fragment1 extends BaseFragment {
     public void getWeatherResult() {
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("account","admin");
-            jsonObject.put("pwd","123456");
-            jsonObject.put("client",2);
+            jsonObject.put("account", "admin");
+            jsonObject.put("pwd", "123456");
+            jsonObject.put("client", 2);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -314,15 +315,15 @@ public class Fragment1 extends BaseFragment {
     };
 
     public void timerOperable() {
-        Observable.interval(1, 2, TimeUnit.SECONDS)
+        mDisposable = Observable.interval(1, 2, TimeUnit.SECONDS)
                 .map(new Function<Long, Long>() {
                     @Override
                     public Long apply(Long aLong) throws Exception {
                         return aLong % (long) textStr.length;
                     }
                 })
-                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.<Long>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Consumer<Long>() {
                     @Override
@@ -334,6 +335,14 @@ public class Fragment1 extends BaseFragment {
                 });
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 
     //联合检测 RXJava2
@@ -552,37 +561,36 @@ public class Fragment1 extends BaseFragment {
     }
 
     private void countTime() {
-       countdown(10)
+        countdown(10)
 
-               .doOnSubscribe(new Consumer<Disposable>() {
-                   @Override
-                   public void accept(Disposable disposable) throws Exception {
-                       LogUtils.e("开始计时");
-                   }
-               })
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        LogUtils.e("开始计时");
+                    }
+                })
 
-               .subscribe(new Observer<Integer>() {
-                   @Override
-                   public void onSubscribe(Disposable d) {
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                   }
+                    }
 
-                   @Override
-                   public void onNext(Integer integer) {
-                       LogUtils.e("当前计时：" + integer);
-                   }
+                    @Override
+                    public void onNext(Integer integer) {
+                        LogUtils.e("当前计时：" + integer);
+                    }
 
-                   @Override
-                   public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-                   }
+                    }
 
-                   @Override
-                   public void onComplete() {
-                       LogUtils.e("计时完成");
-                   }
-               });
-
+                    @Override
+                    public void onComplete() {
+                        LogUtils.e("计时完成");
+                    }
+                });
 
 
     }
@@ -591,7 +599,7 @@ public class Fragment1 extends BaseFragment {
      * 倒计时
      */
 
-   public Observable<Integer> countdown(int time) {
+    public Observable<Integer> countdown(int time) {
         if (time < 0) {
             time = 0;
         }
@@ -601,7 +609,7 @@ public class Fragment1 extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<Long, Integer>() {
                     @Override
-                    public Integer apply(Long aLong){
+                    public Integer apply(Long aLong) {
                         return countTime - aLong.intValue();
                     }
                 })

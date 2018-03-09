@@ -7,24 +7,36 @@
     >
 
     <LinearLayout
-        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+        <FrameLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_show_s"
+                android:text="225555555"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/azimuth_angle_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:text="Hello RxJava!"
+                android:textSize="40sp"/>
 
-        <TextView
-            android:id="@+id/azimuth_angle_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="Hello RxJava!"
-            android:textSize="40sp"/>
+        </FrameLayout>
+
         <Button
             android:id="@+id/rx_java_btn"
-            android:textAllCaps="false"
+            style="@style/ButtonStyle"
             android:text="RXJava"
-            style="@style/ButtonStyle" />
+            android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/btn_baidumap"
             android:layout_width="match_parent"
@@ -114,8 +126,9 @@
             android:padding="2dp"
             android:text="orc"
             android:textAllCaps="false"/>
+
         <Button
-           android:id="@+id/btn9"
+            android:id="@+id/btn9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -123,6 +136,7 @@
             android:padding="2dp"
             android:text="event"
             android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/btn10"
             android:layout_width="match_parent"
@@ -133,6 +147,16 @@
             android:text="dailogFragment"
             android:textAllCaps="false"/>
 
+        <Button
+            android:id="@+id/btn11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_white_line"
+            android:padding="2dp"
+            android:text="dailogFragment"
+            android:textAllCaps="false"
+            />
     </LinearLayout>
 
 </ScrollView>

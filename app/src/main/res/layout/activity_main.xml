@@ -22,10 +22,12 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black"/>
+
         <android.support.v4.app.FragmentTabHost
             android:id="@android:id/tabhost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="0dp"
@@ -33,17 +35,20 @@
                 android:layout_weight="0"/>
         </android.support.v4.app.FragmentTabHost>
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
         <include layout="@layout/toolbar"
             />
+
         <com.example.administrator.view.materialsearchview.MaterialSearchView
             android:id="@+id/search_view"
-            android:elevation="1dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:elevation="1dp"/>
     </FrameLayout>
 </FrameLayout>

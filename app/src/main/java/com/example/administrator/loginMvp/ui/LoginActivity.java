@@ -1,6 +1,8 @@
 package com.example.administrator.loginMvp.ui;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -57,6 +59,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setUserNameError() {
         username.setError("用户名不能为空",getDrawable(R.drawable.small_dot));

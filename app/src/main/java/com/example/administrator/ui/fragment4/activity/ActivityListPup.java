@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,8 +24,8 @@ public class ActivityListPup extends BaseActivity {
     private MyAdapter adaptet;
     private PopupWindow pw;
     private List<String> listNumber;
-    private  ListView lv;
-    private  ImageButton ib_number;
+    private ListView lv;
+    private ImageButton ib_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,17 @@ public class ActivityListPup extends BaseActivity {
         //自定义一个ListView 并加入到PopupWindow
         lv = new ListView(this);
         lv.setDividerHeight(1);
-        lv.setBackgroundResource(R.drawable.bg_cameral_album);
+        lv.setBackgroundResource(R.drawable.bg_white_line);
         lv.setVerticalScrollBarEnabled(false);//
         adaptet = new MyAdapter();
         lv.setAdapter(adaptet);
         //弹出一个popuwindow窗口，设置其显示内容和宽高度
-        pw = new PopupWindow(lv,et_number.getWidth(),1000);
+        pw = new PopupWindow(lv, et_number.getWidth(), 1000, true);
         pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//**************设置背景图片***************
         pw.setFocusable(true);
+
+        //设置模式，和Activity的一样，覆盖，调整大小。
+        pw.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         //设置显示的位置
         pw.setOutsideTouchable(true);
         pw.showAsDropDown(et_number, 0, -5);
@@ -75,14 +79,14 @@ public class ActivityListPup extends BaseActivity {
         public View getView(final int position, View convertView, final ViewGroup parent) {
             numberHolder holder = null;
 
-            if(convertView == null) {
+            if (convertView == null) {
                 holder = new numberHolder();
                 convertView = View.inflate(ActivityListPup.this, R.layout.item_number, null);
                 holder.tv_item_number = (TextView) convertView.findViewById(R.id.tv_item_number);
                 holder.item_delete = (ImageButton) convertView.findViewById(R.id.item_delete);
                 convertView.setTag(holder);
-            }else {
-                holder= (numberHolder) convertView.getTag();
+            } else {
+                holder = (numberHolder) convertView.getTag();
             }
 
             holder.tv_item_number.setText(listNumber.get(position));
@@ -90,6 +94,7 @@ public class ActivityListPup extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     et_number.setText(listNumber.get(position));
+                    pw.dismiss();
                 }
             });
             holder.item_delete.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +102,7 @@ public class ActivityListPup extends BaseActivity {
                 public void onClick(View v) {
                     listNumber.remove(position);
                     adaptet.notifyDataSetChanged();
-                    if (listNumber.size() == 0){
+                    if (listNumber.size() == 0) {
                         pw.dismiss();
                     }
                 }
@@ -117,11 +122,13 @@ public class ActivityListPup extends BaseActivity {
 
 
     }
-    class numberHolder{
+
+    class numberHolder {
         TextView tv_item_number;
         ImageButton item_delete;
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

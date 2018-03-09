@@ -61,18 +61,13 @@ public class ItemListFragment extends ListFragment {
         }.start();
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.ItemListEvent event)
-    {
-
+    public void onEventMainThread(Event.ItemListEvent event) {
         setListAdapter(new ArrayAdapter<Item>(getActivity(), android.R.layout.simple_list_item_activated_1, android.R.id.text1, event.getItems()));
     }
 
     @Override
-    public void onListItemClick(ListView listView, View view, int position,
-                                long id)
-    {
+    public void onListItemClick(ListView listView, View view, int position, long id){
         super.onListItemClick(listView, view, position, id);
-
         EventBus.getDefault().post(getListView().getItemAtPosition(position));
     }
 

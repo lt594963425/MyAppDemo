@@ -6,10 +6,12 @@
     android:layout_height="match_parent">
     <include layout="@layout/toolbar"/>
    <Button
+       android:text="中间login"
        android:id="@+id/button_login"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
     <Button
+        android:text="底部login"
         android:id="@+id/button_login2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

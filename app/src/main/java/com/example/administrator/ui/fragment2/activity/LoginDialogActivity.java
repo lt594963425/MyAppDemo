@@ -1,13 +1,14 @@
 package com.example.administrator.ui.fragment2.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
-import com.example.administrator.ui.fragment2.View.ButtomDialogFragment;
-import com.example.administrator.ui.fragment2.View.LoginDialogFragment;
+import com.example.administrator.ui.fragment2.fragment.ButtomDialogFragment;
+import com.example.administrator.ui.fragment2.fragment.LoginDialogFragment;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.BindView;
@@ -67,5 +68,40 @@ public class LoginDialogActivity extends BaseActivity implements LoginDialogFrag
     public void onLoginInputComplete(String username, String password) {
         mTextShow.setText("帐号：" + username + ",  密码 :" + password);
     }
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("TAG","-------------------onResume------------------");
 
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("TAG","-------------------onPause------------------");
+
+    }
+    @Override
+    protected void onRestart() {
+        Log.e("TAG","-------------------onRestart------------------");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.e("TAG","-------------------onStart------------------");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.e("TAG","-------------------onStop------------------");
+        super.onStop();
+    }
 }

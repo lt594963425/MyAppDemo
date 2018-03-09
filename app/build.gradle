@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 android {
-    signingConfigs {
-        config {
-            keyAlias 'key0'
-            keyPassword '123456'
-            storeFile file('C:/liutao.jks')
-            storePassword '123456'
-        }
-    }
+//    signingConfigs {
+//        config {
+//            keyAlias 'key0'
+//            keyPassword '123456'
+//            storeFile file('C:/liutao.jks')
+//            storePassword '123456'
+//        }
+//    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -29,13 +29,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
             zipAlignEnabled false
-            signingConfig signingConfigs.config
+            //signingConfig signingConfigs.config
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled false
-            signingConfig signingConfigs.config
+           // signingConfig signingConfigs.config
         }
     }
      compileOptions {
@@ -123,6 +123,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
 
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
     compile 'com.zhy:okhttputils:2.6.2'
     //必须使用
     compile 'com.lzy.net:okgo:3.0.4'

@@ -26,6 +26,7 @@ import com.example.administrator.ui.fragment2.activity.RecyclerViewActivity;
 import com.example.administrator.ui.fragment2.activity.TestORCActivity;
 import com.example.administrator.ui.fragment2.activity.XuanZhuanActivity;
 import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
+import com.example.administrator.ui.testactivityresult.ActivityFirst;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.concurrent.TimeUnit;
@@ -46,6 +47,8 @@ public class Fragment2 extends BaseFragment {
     @BindView(R.id.rx_java_btn)
     Button mRxJavaBtn;
     Unbinder unbinder;
+    @BindView(R.id.tv_show_s)
+    TextView mTvShowS;
     private SensorManager mSensorManager;
     private Sensor accelerometer; // 加速度传感器
     private Sensor magnetic; // 地磁场传感器
@@ -60,12 +63,12 @@ public class Fragment2 extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_two, null);
         ButterKnife.bind(this, view);
         RxView.clicks(mRxJavaBtn).throttleFirst(1, TimeUnit.SECONDS)
-        .subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                openActivity(RXJavaActivity.class);
-            }
-        });
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        openActivity(RXJavaActivity.class);
+                    }
+                });
         view.findViewById(R.id.btn_baidumap).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +135,13 @@ public class Fragment2 extends BaseFragment {
                 openActivity(LoginDialogActivity.class);
             }
         });
+        view.findViewById(R.id.btn11).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(ActivityFirst.class);
+            }
+        });
+
         initSensor();
         return view;
     }
@@ -180,29 +190,30 @@ public class Fragment2 extends BaseFragment {
         SensorManager.getRotationMatrix(R, null, accelerometerValues,
                 magneticFieldValues);
         SensorManager.getOrientation(R, values);
-        values[0] = (float) Math.toDegrees(values[0]);
-        if (values[0] >= -5 && values[0] < 5) {
+        float value = (float) Math.toDegrees(values[0]);
+
+        if (value >= -5 && value < 5) {
             azimuthAngle.setText("↑正北");
-        } else if (values[0] >= 5 && values[0] < 85) {
+        } else if (value >= 5 && value < 85) {
             // Log.i(TAG, "东北");
             azimuthAngle.setText("↑东北");
-        } else if (values[0] >= 85 && values[0] <= 95) {
+        } else if (value >= 85 && value <= 95) {
             // Log.i(TAG, "正东");
             azimuthAngle.setText("↑正东");
-        } else if (values[0] >= 95 && values[0] < 175) {
+        } else if (value >= 95 && value < 175) {
             // Log.i(TAG, "东南");
             azimuthAngle.setText("↑东南");
-        } else if ((values[0] >= 175 && values[0] <= 180)
-                || (values[0]) >= -180 && values[0] < -175) {
+        } else if ((value >= 175 && value <= 180)
+                || (value) >= -180 && value < -175) {
             // Log.i(TAG, "正南");
             azimuthAngle.setText("↑正南");
-        } else if (values[0] >= -175 && values[0] < -95) {
+        } else if (value >= -175 && value < -95) {
             // Log.i(TAG, "西南");
             azimuthAngle.setText("↑西南");
-        } else if (values[0] >= -95 && values[0] < -85) {
+        } else if (value >= -95 && value < -85) {
             // Log.i(TAG, "正西");
             azimuthAngle.setText("↑正西");
-        } else if (values[0] >= -85 && values[0] < -5) {
+        } else if (value >= -85 && value < -5) {
             // Log.i(TAG, "西北");
             azimuthAngle.setText("↑西北");
         }

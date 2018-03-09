@@ -618,6 +618,28 @@ public class RXJavaActivity extends AppCompatActivity {
                         LogUtils.e("fromIterable:" + aLong);
                     }
                 });
+        Observable.timer(2, TimeUnit.MILLISECONDS)
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 

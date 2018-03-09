@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +20,7 @@ import com.example.administrator.greendao.ActivityGreenDao;
 import com.example.administrator.loginMvp.ui.LoginActivity;
 import com.example.administrator.net.ActivityRetrofit;
 import com.example.administrator.ui.fragment4.activity.ActivityImageLoader;
+import com.example.administrator.ui.fragment4.activity.ActivityListPup;
 import com.example.administrator.ui.fragment4.activity.ActivityListViewRefresh;
 import com.example.administrator.ui.fragment4.activity.ActivityOne;
 import com.example.administrator.ui.fragment4.activity.ActivityTextInputLayout;
@@ -40,11 +42,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Fragment4 extends BaseFragment implements View.OnClickListener {
 
 
-
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_four, null);
-        CircleImageView circleimage =  view.findViewById(R.id.profile_image);
+        CircleImageView circleimage = view.findViewById(R.id.profile_image);
         ImageView proFileImage = view.findViewById(R.id.circle_image);
 
         view.findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {
@@ -89,6 +90,11 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.btn10).setOnClickListener(this);
         view.findViewById(R.id.btn11).setOnClickListener(this);
         view.findViewById(R.id.btn12).setOnClickListener(this);
+
+        Button buttonList = view.findViewById(R.id.btn_list);
+        buttonList.setOnClickListener(this);
+
+
         view.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +121,6 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void setTitle(String title) {
         setTitle("大学");
@@ -126,6 +131,7 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     protected void initData() {
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -164,6 +170,10 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.btn12:
                 openActivity(DecortorTestActivity.class);
+                break;
+            case R.id.btn_list:
+                openActivity(ActivityListPup.class);
+
                 break;
             default:
                 break;
