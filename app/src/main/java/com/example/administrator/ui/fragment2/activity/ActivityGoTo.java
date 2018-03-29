@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -71,12 +70,7 @@ public class ActivityGoTo extends BaseActivity implements View.OnClickListener {
         mAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         //绑定 Adapter到控件
         spinner.setAdapter(mAdapter);
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-        });
     }
 
     @Override

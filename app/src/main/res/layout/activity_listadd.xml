@@ -7,32 +7,33 @@
               android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
+
     <RelativeLayout
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    <EditText
-
-        android:id="@+id/et_number"
-        android:layout_width="200dip"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dip"
-        android:background="@drawable/et_shap"
-        android:hint="请输入号码"
-        android:padding="5dip"/>
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="10dp">
 
-    <ImageButton
-        android:padding="5dip"
-        android:gravity="center"
-        android:id="@+id/ib_number"
-        android:layout_width="30dip"
-        android:layout_height="30dip"
-        android:layout_alignRight="@id/et_number"
-        android:clickable="true"
-        android:onClick="showNumber"
-        android:src="@mipmap/down_arrow"/>
+        <EditText
+
+            android:id="@+id/et_number"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dip"
+            android:background="@drawable/et_shap"
+            android:hint="请输入号码"
+            android:padding="5dip"/>
+
+        <ImageButton
+            android:id="@+id/ib_number"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignRight="@id/et_number"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="showNumber"
+            android:padding="5dip"
+            android:src="@mipmap/down_arrow"/>
     </RelativeLayout>
 </LinearLayout>

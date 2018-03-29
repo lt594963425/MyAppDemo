@@ -2,6 +2,7 @@ package com.example.administrator.ui.fragment4.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -9,48 +10,86 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.base.BaseActivity;
+import com.example.administrator.utils.ToastUtils;
+import com.example.administrator.view.XToolbar;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
- *  RecyclerView recyclerView
+ * RecyclerView recyclerView
  */
-public class ActivityTwo extends BaseActivity {
-    private android.os.Handler handler = new android.os.Handler();
-    private Toolbar toolbar;
-    DrawerLayout drawerlayout;
-    private RecyclerView recyclerView;
+public class ActivityTwo extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+    @BindView(R.id.toolbar)
+    XToolbar mToolbar;
+    @BindView(R.id.rvw)
+    RecyclerView mRvw;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.left)
+    LinearLayout mLeft;
+    @BindView(R.id.right)
+    LinearLayout mRight;
+    @BindView(R.id.drawerlayout)
+    DrawerLayout mDrawerlayout;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two);
+        ButterKnife.bind(this);
         //Toolbar和drawerLayout的联合使用 ActionBarDrawerToggle()
-        toolbar = findView(R.id.toolbar);
-        drawerlayout = findView(R.id.drawerlayout);
+
         //设置导航图标
-        toolbar.setLogo(R.drawable.ic_dialog_email);
-        toolbar.setTitle("刘涛");
-        toolbar.setSubtitle("刘媛");
-        toolbar.inflateMenu(R.menu.menu);
+        mToolbar.setLogo(R.drawable.ic_dialog_email);
+        mToolbar.setTitle("刘涛");
+        mToolbar.setSubtitle("刘媛");
+        mToolbar.inflateMenu(R.menu.menu);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.app_name, R.string.app_name);
+        mToolbar.setOnMenuItemClickListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerlayout, mToolbar, R.string.app_name, R.string.app_name);
         toggle.syncState();//同步
+        mDrawerlayout.addDrawerListener(toggle);
+        mDrawerlayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
 
-        drawerlayout.addDrawerListener(toggle);
+            }
 
-        recyclerView = (RecyclerView) findViewById(R.id.rvw);
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+        mRvw = (RecyclerView) findViewById(R.id.rvw);
      /*   GridLayoutManager gm = new GridLayoutManager(this,3);
         gm.setOrientation(GridLayoutManager.VERTICAL);*/
 
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(new MyRecyclerView());
+        mRvw.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        mRvw.setAdapter(new MyRecyclerView());
 
         final SwipeRefreshLayout mRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mRefresh.setProgressBackgroundColorSchemeColor(Color.WHITE);
@@ -69,6 +108,7 @@ public class ActivityTwo extends BaseActivity {
             }
         });
     }
+
 
     class MyRecyclerView extends RecyclerView.Adapter {
         @Override
@@ -98,7 +138,7 @@ public class ActivityTwo extends BaseActivity {
             super(itemView);
             tvs = (TextView) itemView.findViewById(R.id.tv);
             ViewGroup.LayoutParams lp = tvs.getLayoutParams();
-            lp.height =  (int) (200 + Math.random() * 400) ;
+            lp.height = (int) (200 + Math.random() * 400);
             tvs.setLayoutParams(lp);
         }
 
@@ -113,6 +153,41 @@ public class ActivityTwo extends BaseActivity {
             });
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.jy:
+                //普通模式m
+                mDrawerlayout.openDrawer(mRight);
+                mDrawerlayout.openDrawer(mRight);
+                break;
+            case R.id.id_map_model_common:
+                //普通模式m
+                mDrawerlayout.openDrawer(mRight);
+
+                break;
+            case R.id.id_map_model_following:
+                //跟随模式
+                mDrawerlayout.openDrawer(mLeft);
+
+                break;
+            case R.id.id_map_model_compass:
+                //罗盘模式
+
+                ToastUtils.showToast("罗盘模式");
+                break;
+        }
+
+        return false;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-     <item android:title="加好友"
-         android:id="@+id/jy"
-           app:showAsAction="always"
-         android:icon="@drawable/ic_dialog_dialer"/>
-    <item android:title="普通模式"
+    <item
+        android:id="@+id/jy"
+        android:icon="@drawable/ic_dialog_dialer"
+        android:title="加好友"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/id_map_model_common"
-          android:icon="@drawable/ic_dialog_info"/>
-    <item android:title="跟随模式"
+        android:icon="@drawable/ic_dialog_info"
+        android:title="普通模式"/>
+    <item
         android:id="@+id/id_map_model_following"
-          android:icon="@drawable/ic_dialog_focused_holo"/>
-    <item android:title="罗盘模式"
+        android:icon="@drawable/ic_dialog_focused_holo"
+        android:title="跟随模式"/>
+    <item
         android:id="@+id/id_map_model_compass"
-          android:icon="@drawable/ic_dialog_map"
-       />
+        android:icon="@drawable/ic_dialog_map"
+        android:title="罗盘模式"
+        />
 </menu>

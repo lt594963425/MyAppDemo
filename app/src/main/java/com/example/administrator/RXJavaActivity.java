@@ -64,6 +64,7 @@ public class RXJavaActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         RxView.clicks(mRxjavaOneBtn)
                 .throttleFirst(30, TimeUnit.SECONDS)
+
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {

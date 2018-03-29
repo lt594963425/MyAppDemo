@@ -138,6 +138,7 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         mFragments.put(3, new Fragment4());
         mFixPagerAdapter.setFragments(mFragments);
         mFixPagerAdapter.setTitles(titles);
+
         mViewPager.setAdapter(mFixPagerAdapter);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);//绑定viewpager
         mTabHost.setOnTabChangedListener(this);

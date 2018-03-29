@@ -50,6 +50,7 @@ public class ActivityListPup extends BaseActivity {
         lv.setVerticalScrollBarEnabled(false);//
         adaptet = new MyAdapter();
         lv.setAdapter(adaptet);
+
         //弹出一个popuwindow窗口，设置其显示内容和宽高度
         pw = new PopupWindow(lv, et_number.getWidth(), 1000, true);
         pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//**************设置背景图片***************

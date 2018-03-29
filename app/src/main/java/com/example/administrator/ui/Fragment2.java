@@ -27,8 +27,10 @@ import com.example.administrator.ui.fragment2.activity.TestORCActivity;
 import com.example.administrator.ui.fragment2.activity.XuanZhuanActivity;
 import com.example.administrator.ui.fragment2.activity.photo.PhotoOrcActivity;
 import com.example.administrator.ui.testactivityresult.ActivityFirst;
+import com.example.administrator.utils.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -49,6 +51,8 @@ public class Fragment2 extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.tv_show_s)
     TextView mTvShowS;
+    @BindView(R.id.random)
+    Button mRandom;
     private SensorManager mSensorManager;
     private Sensor accelerometer; // 加速度传感器
     private Sensor magnetic; // 地磁场传感器
@@ -141,7 +145,14 @@ public class Fragment2 extends BaseFragment {
                 openActivity(ActivityFirst.class);
             }
         });
-
+        mRandom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random randomGenerator = new Random(System.currentTimeMillis());
+                int s = randomGenerator.nextInt() % 180;
+                ToastUtils.showToast("角度：" + s);
+            }
+        });
         initSensor();
         return view;
     }

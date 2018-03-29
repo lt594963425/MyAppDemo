@@ -12,15 +12,18 @@
         android:focusable="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <FrameLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_show_s"
-                android:text="225555555"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="225555555"/>
+
             <TextView
                 android:id="@+id/azimuth_angle_value"
                 android:layout_width="wrap_content"
@@ -154,9 +157,13 @@
             android:layout_marginTop="2dp"
             android:background="@drawable/bg_white_line"
             android:padding="2dp"
-            android:text="dailogFragment"
+            android:text="java resultActivity回调"
             android:textAllCaps="false"
             />
+        <Button
+            android:id="@+id/random"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </ScrollView>

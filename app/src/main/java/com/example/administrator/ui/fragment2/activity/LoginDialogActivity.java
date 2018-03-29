@@ -53,7 +53,7 @@ public class LoginDialogActivity extends BaseActivity implements LoginDialogFrag
     }
 
     private void showLoginDialog2() {
-       ButtomDialogFragment buttomDialogFragment =  new ButtomDialogFragment();
+        ButtomDialogFragment buttomDialogFragment = new ButtomDialogFragment();
         buttomDialogFragment.show(this.getFragmentManager(), "loginDialog2");
     }
 
@@ -61,20 +61,20 @@ public class LoginDialogActivity extends BaseActivity implements LoginDialogFrag
     private void showLoginDialog() {
         LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
         loginDialogFragment.show(getFragmentManager(), "loginDialog");
-
     }
 
     @Override
     public void onLoginInputComplete(String username, String password) {
         mTextShow.setText("帐号：" + username + ",  密码 :" + password);
     }
+
     /**
      * 方法必须重写
      */
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("TAG","-------------------onResume------------------");
+        Log.e("TAG", "-------------------onResume------------------");
 
     }
 
@@ -84,24 +84,25 @@ public class LoginDialogActivity extends BaseActivity implements LoginDialogFrag
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("TAG","-------------------onPause------------------");
+        Log.e("TAG", "-------------------onPause------------------");
 
     }
+
     @Override
     protected void onRestart() {
-        Log.e("TAG","-------------------onRestart------------------");
+        Log.e("TAG", "-------------------onRestart------------------");
         super.onRestart();
     }
 
     @Override
     protected void onStart() {
-        Log.e("TAG","-------------------onStart------------------");
+        Log.e("TAG", "-------------------onStart------------------");
         super.onStart();
     }
 
     @Override
     protected void onStop() {
-        Log.e("TAG","-------------------onStop------------------");
+        Log.e("TAG", "-------------------onStop------------------");
         super.onStop();
     }
 }
