@@ -72,6 +72,7 @@ dependencies {
 
     //百度地图
     compile files('libs/BaiduLBS_Android.jar')
+
     compile files('libs/asmack-jse-buddycloud-2010.12.11.jar')
     compile files('libs/jpinyin-1.0.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')

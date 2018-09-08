@@ -35,6 +35,7 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 
@@ -75,7 +76,7 @@ public class RXJavaActivity extends AppCompatActivity {
         mUpdateVersion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG,"12345");
+                Log.e(TAG, "12345");
                 mJsonObject = new JSONObject();
                 try {
                     mJsonObject.put("version_code", "3");
@@ -90,12 +91,12 @@ public class RXJavaActivity extends AppCompatActivity {
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {
-                                Log.e(TAG,e.toString());
+                                Log.e(TAG, e.toString());
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
-                                Log.e(TAG,response);
+                                Log.e(TAG, response);
                                 try {
                                     RxTextView.text(mRxText).accept(response);
                                 } catch (Exception e) {
@@ -613,6 +614,7 @@ public class RXJavaActivity extends AppCompatActivity {
     public void timerOp() {
 
         Observable.timer(2, TimeUnit.MILLISECONDS)
+                .take(10)
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
@@ -641,7 +643,6 @@ public class RXJavaActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     /**
@@ -652,12 +653,20 @@ public class RXJavaActivity extends AppCompatActivity {
         // 参数1 = 第1次延迟时间；
         // 参数2 = 间隔时间数字；
         // 参数3 = 时间单位；
-        Observable.interval(3, 1, TimeUnit.SECONDS)
+        Observable.interval(3, TimeUnit.SECONDS)
+                .take(2)
                 .map(new Function<Long, Long>() {
 
                     @Override
                     public Long apply(Long aLong) throws Exception {
                         return aLong / 4;
+                    }
+                })
+                .filter(new Predicate<Long>() {
+                    @Override
+                    public boolean test(Long aLong) throws Exception {
+
+                        return false;
                     }
                 })
                 // 该例子发送的事件序列特点：延迟3s后发送事件，每隔1秒产生1个数字（从0开始递增1，无限个）
@@ -684,6 +693,24 @@ public class RXJavaActivity extends AppCompatActivity {
                     }
 
                 });
+
+        Observable.interval(3, TimeUnit.SECONDS)
+                .take(3)
+                .map(new Function<Long, Boolean>() {
+                    @Override
+                    public Boolean apply(Long aLong) throws Exception {
+
+                        return null;
+                    }
+                }).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+
+            }
+        })
+
+        // 该例子发送的事件序列特点：延迟3s后发送事件，每隔1秒产生1个数字（从0开始递增1，无限个）
+        ;
 
     }
 

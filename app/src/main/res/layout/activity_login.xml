@@ -54,14 +54,13 @@
 
         <TextView
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/bg_white_line"
             android:text="百分比适配"
             android:textColor="@color/black"
             app:layout_heightPercent="20%h"
-            app:layout_marginPercent="20%w"
+            app:layout_widthPercent="50%w"
            />
     </com.example.administrator.view.PercentView.PercentLinearLayout>
 </LinearLayout>

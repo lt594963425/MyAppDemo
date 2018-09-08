@@ -160,10 +160,17 @@
             android:text="java resultActivity回调"
             android:textAllCaps="false"
             />
+
         <Button
             android:id="@+id/random"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/changeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="动态修改toolbar菜单"/>
     </LinearLayout>
 
 </ScrollView>

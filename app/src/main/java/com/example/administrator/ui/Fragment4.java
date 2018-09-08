@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.R;
@@ -46,6 +47,10 @@ public class Fragment4 extends BaseFragment implements View.OnClickListener {
     protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_four, null);
         CircleImageView circleimage = view.findViewById(R.id.profile_image);
+        TextView count = view.findViewById(R.id.count);
+
+
+
         ImageView proFileImage = view.findViewById(R.id.circle_image);
 
         view.findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {

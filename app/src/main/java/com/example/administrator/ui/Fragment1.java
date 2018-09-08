@@ -64,7 +64,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Function3;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -106,6 +105,10 @@ public class Fragment1 extends BaseFragment {
     Button mCacheTest;
     @BindView(R.id.text_layout)
     TextView mTextLayout;
+    @BindView(R.id.shanyizhang)
+    TextView shanyizhang;
+    @BindView(R.id.xiayizhang)
+    TextView xiayizhang;
     private static final String TAG = "Fragment1";
     String[] mImages = new String[]{
             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498558224830&di=b546d2811f9fa910decc55b981f8df8c&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F11%2F77%2F47%2F63bOOOPIC74_1024.jpg",
@@ -137,6 +140,7 @@ public class Fragment1 extends BaseFragment {
         timerOperable();
         handler = new MyHandler((MainActivity) getContext());
         initLooperTextView();
+
         // ThreadPoolProxyFactory.getNormalThreadPoolProxy().execute(looppertextview);
 //        RxTextView.textChanges(mUrlEt)
 //                .subscribe(new Action1<CharSequence>() {
@@ -200,13 +204,42 @@ public class Fragment1 extends BaseFragment {
 
     }
 
+    int id = 0;
 
     private void setBanner() {
+        id = 0;
         List<Integer> mList = new ArrayList(Arrays.asList(mImages));
         mBanner.setOffscreenPageLimit(3);
         mBanner.setImages(new ArrayList<>(mList))
                 .setImageLoader(new GlideImageLoader()).start();
         mBanner.setBannerAnimation(Transformer.ScaleInOut);
+
+        shanyizhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                id--;
+                ToastUtils.showToast(""+id);
+                if (id < 0) {
+                    id = 0;
+                }
+                mBanner.onPageSelected(id);
+
+            }
+        });
+        xiayizhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                id++;
+                ToastUtils.showToast(""+id);
+                if (id > mImages.length - 1) {
+                    id = mImages.length ;
+                }
+                mBanner.onPageSelected(id);
+
+            }
+        });
     }
 
     @OnClick({R.id.url_et, R.id.iv_delete, R.id.url_btn, R.id.md5_btn, R.id.btn_rx, R.id.cacheTest, R.id.notify})
@@ -412,7 +445,6 @@ public class Fragment1 extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        mBanner.isAutoPlay(true);
     }
 
     @Override
@@ -463,29 +495,29 @@ public class Fragment1 extends BaseFragment {
         }
     }
 
+    boolean isOK;
+    int indexD = 0;
+
     public void RXjavaTest() {
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> e) throws Exception {
-                for (int i = 0; i < 1000; i++) {
-                    e.onNext(i);
-                    Thread.sleep(2000);
+                while (indexD < 100) {
+                    Thread.sleep(10000);
+                    e.onNext(indexD);
                 }
+
+
             }
         })
                 .subscribeOn(Schedulers.io()) // 指定 subscribe() 发生在 IO 线程
-                .filter(new Predicate<Integer>() { // 过滤的作用
-                    @Override
-                    public boolean test(Integer integer) throws Exception {
-                        return integer % 2 == 0;
-                    }
-                })
                 .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
                 .compose(this.<Integer>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer integer) throws Exception {
-                        ToastUtils.showToast("" + integer);
+                        indexD = integer + 1;
+                        ToastUtils.showToast("开始：" + indexD);
                     }
                 });
 
@@ -562,14 +594,12 @@ public class Fragment1 extends BaseFragment {
 
     private void countTime() {
         countdown(10)
-
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
                         LogUtils.e("开始计时");
                     }
                 })
-
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {

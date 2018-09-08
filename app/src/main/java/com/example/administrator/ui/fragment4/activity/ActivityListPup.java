@@ -55,7 +55,6 @@ public class ActivityListPup extends BaseActivity {
         pw = new PopupWindow(lv, et_number.getWidth(), 1000, true);
         pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//**************设置背景图片***************
         pw.setFocusable(true);
-
         //设置模式，和Activity的一样，覆盖，调整大小。
         pw.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         //设置显示的位置

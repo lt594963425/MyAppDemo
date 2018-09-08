@@ -153,6 +153,12 @@ public class Fragment2 extends BaseFragment {
                 ToastUtils.showToast("角度：" + s);
             }
         });
+        view.findViewById(R.id.changeToolbar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         initSensor();
         return view;
     }

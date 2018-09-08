@@ -40,25 +40,29 @@
             android:theme="@style/AppTheme"
             />
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="adjustPan"
-            >
-
+            android:name=".mvpbase.login.Login2Activity">
             <!--//解决tabHost被软键盘顶起的问题-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
         <activity android:name=".ui.fragment4.activity.ActivityImageLoader"/>
         <activity android:name=".ui.fragment4.activity.ActivityListViewRefresh"/>
         <activity android:name=".ui.fragment4.activity.ActivityOne"/>
         <activity android:name=".ui.fragment4.activity.ActivityTextInputLayout"/>
         <activity android:name=".ui.fragment4.activity.ActivityTwo"/>
-        <activity android:name=".ui.fragment4.activity.ActivityListPup"
-                  android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".ui.fragment4.activity.ActivityListPup"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".greendao.ActivityGreenDao"/>
         <activity android:name=".ui.fragment4.activity.OKHttpActivity"/>
         <activity android:name=".net.ActivityRetrofit"/>

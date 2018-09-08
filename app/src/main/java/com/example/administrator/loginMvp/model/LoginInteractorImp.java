@@ -33,6 +33,7 @@ public class LoginInteractorImp implements LoginInteractor{
     }
 
     private void requestNet(String username, String password, final OnLoginListener listener) {
+
         OkHttpUtils
                 .post()
                 .url("http://192.168.6.46/ServletTest/LoginServlet")
