@@ -1,6 +1,10 @@
-package com.example.administrator.mvpbase;
+package com.example.administrator.mvpbase.mvpbaseactivity;
 
 import android.os.Bundle;
+
+import com.example.administrator.mvpbase.MvpPresenter;
+import com.example.administrator.mvpbase.MvpView;
+
 
 /**
  * $activityName

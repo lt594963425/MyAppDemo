@@ -1,9 +1,13 @@
-package com.example.administrator.mvpbase;
+package com.example.administrator.mvpbase.mvpbaseactivity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.example.administrator.base.BaseActivity;
+import com.example.administrator.mvpbase.MvpCallback;
+import com.example.administrator.mvpbase.MvpPresenter;
+import com.example.administrator.mvpbase.MvpView;
+
 
 /**
  * $activityName
@@ -14,7 +18,8 @@ import com.example.administrator.base.BaseActivity;
  */
 
 
-public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> extends BaseActivity implements MvpCallback<V, P> {
+public abstract class MvpActivity<V extends MvpView, P extends MvpPresenter<V>> extends BaseActivity
+        implements MvpCallback<V, P> {
 
     private P presneter;
     private V view;

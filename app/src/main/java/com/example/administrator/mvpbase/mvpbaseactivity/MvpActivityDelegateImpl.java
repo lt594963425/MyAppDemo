@@ -1,7 +1,12 @@
-package com.example.administrator.mvpbase;
+package com.example.administrator.mvpbase.mvpbaseactivity;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.administrator.mvpbase.MvpCallback;
+import com.example.administrator.mvpbase.MvpPresenter;
+import com.example.administrator.mvpbase.MvpView;
+import com.example.administrator.mvpbase.ProxyMvpCallback;
 
 /**
  * $activityName
@@ -14,7 +19,8 @@ import android.util.Log;
 
  */
 
-public class MvpActivityDelegateImpl<V extends MvpView, P extends MvpPresenter<V>> implements MvpActivityDelegate<V, P> {
+public class MvpActivityDelegateImpl<V extends MvpView, P extends MvpPresenter<V>>
+        implements MvpActivityDelegate<V, P> {
     private String TAG = "MvpActivity";
     private ProxyMvpCallback<V, P> proxyMvpCallback;
     private MvpCallback<V, P> mvpCallback;
@@ -22,7 +28,7 @@ public class MvpActivityDelegateImpl<V extends MvpView, P extends MvpPresenter<V
     public MvpActivityDelegateImpl(MvpCallback<V, P> callback) {
         this.mvpCallback = callback;
         if (mvpCallback == null) {
-            throw new NullPointerException("不能够为空");
+            throw new NullPointerException("不能为空");
         }
         this.proxyMvpCallback = new ProxyMvpCallback<>(mvpCallback);
     }

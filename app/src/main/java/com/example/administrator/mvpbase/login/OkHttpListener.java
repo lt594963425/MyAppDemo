@@ -12,9 +12,7 @@ import org.json.JSONObject;
 
 public interface OkHttpListener {
     void onSuccess(JSONObject jsonSuccess);
-
     void onFaild(JSONObject jsonFaild);
-
     void onError(String jsonError);
     void onExceptError(String jsonError);
 }

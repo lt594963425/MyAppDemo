@@ -114,7 +114,6 @@ public class ActivityTwo extends BaseActivity implements Toolbar.OnMenuItemClick
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_rv, parent, false);
-
             return new MyViewHolder(view);
         }
 
@@ -124,7 +123,6 @@ public class ActivityTwo extends BaseActivity implements Toolbar.OnMenuItemClick
             MyViewHolder mh = (MyViewHolder) holder;
             mh.setDate(position);
         }
-
         @Override
         public int getItemCount() {
             return 100;

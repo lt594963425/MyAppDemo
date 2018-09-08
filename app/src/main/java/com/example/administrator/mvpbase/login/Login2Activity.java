@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.MainActivity;
 import com.example.administrator.R;
-import com.example.administrator.mvpbase.MvpActivity;
+import com.example.administrator.mvpbase.mvpbaseactivity.MvpActivity;
 import com.example.administrator.utils.ToastUtils;
 
 import org.json.JSONObject;
